@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { CreditCard, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 
 interface PaymentSectionProps {
   paymentMethod: "card" | "upi";

@@ -10,7 +10,7 @@ export const Route = createFileRoute('/_public/refund-policy')({
 
 function RefundComponent() {
   const { theme } = useTheme()
-  const isDark = theme === 'dark'
+  // const isDark = theme === 'dark'
   const primaryColor = getThemeColor(theme, 'primary')
 
   return (

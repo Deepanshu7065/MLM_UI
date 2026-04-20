@@ -1,7 +1,7 @@
 import { useNavigate } from '@tanstack/react-router'
 import { useTheme } from "@/theme/ThemeProvider"
 import { getThemeColor } from "@/theme/themeConfig"
-import { LayoutGrid, Instagram, Twitter, Youtube, Facebook, ArrowRight, Mail, Phone, MapPin, Building2 } from 'lucide-react'
+import { LayoutGrid, Instagram, Twitter, Youtube, Facebook, ArrowRight, Mail, MapPin, Building2 } from 'lucide-react'
 
 export function Footer() {
     const navigate = useNavigate()

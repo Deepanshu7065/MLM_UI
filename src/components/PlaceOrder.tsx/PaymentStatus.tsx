@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Loader2, ShieldCheck } from "lucide-react";
 
 const ProcessingState = ({ isDark, c }: any) => (
