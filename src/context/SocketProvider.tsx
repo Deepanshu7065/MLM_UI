@@ -12,7 +12,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         if (socketRef.current?.connected) return;
 
         // Note: Production mein ye IP change karke backend URL dalna hoga
-        const newSocket = io("http://172.30.2.140:5001", {
+        const newSocket = io("https://mlm-server.onrender.com", {
             transports: ["websocket"],
             withCredentials: true,
             reconnection: true,
