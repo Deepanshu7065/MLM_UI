@@ -120,7 +120,7 @@ function RouteComponent() {
       <div className="ch-wrap">
         <img
           className="ch-img"
-          src="/src/assets/laptop.jpg"
+          src="/assets/laptop.jpg"
           alt="Courses"
         />
         <div className="ch-grad" />

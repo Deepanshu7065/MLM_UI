@@ -32,10 +32,10 @@ function RouteComponent() {
   // const primaryHover = getThemeColor(theme, "primaryHover");
 
   const images = [
-    "/src/assets/course1.jpg",
-    "/src/assets/course2.jpg",
-    "/src/assets/course3.jpg",
-    "/src/assets/course4.jpg",
+    "/assets/course1.jpg",
+    "/assets/course2.jpg",
+    "/assets/course3.jpg",
+    "/assets/course4.jpg",
   ];
 
   const [index, setIndex] = useState(0);

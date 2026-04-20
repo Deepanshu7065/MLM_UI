@@ -182,7 +182,7 @@ function RouteComponent() {
 
       {/* ── Hero ── */}
       <div className="ct-hero">
-        <img className="ct-hero-img" src="/src/assets/cellphone-6531139_1920.jpg" alt="Contact Us" />
+        <img className="ct-hero-img" src="/assets/cellphone-6531139_1920.jpg" alt="Contact Us" />
         <div className="ct-hero-grad" />
         <div className="ct-hero-blob" />
         <div className="ct-hero-content">

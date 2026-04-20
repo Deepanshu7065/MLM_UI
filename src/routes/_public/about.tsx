@@ -104,7 +104,7 @@ function RouteComponent() {
 
       {/* Hero Section */}
       <div className="ab-hero">
-        <img className="ab-hero-img" src="/src/assets/ABOUT US.png" alt="About Us" />
+        <img className="ab-hero-img" src="/assets/ABOUT US.png" alt="About Us" />
         <div className="ab-hero-grad" />
         <div className="ab-hero-content">
           <div className="ab-badge"><Sparkles size={11} /> About Us</div>

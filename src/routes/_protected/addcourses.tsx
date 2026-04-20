@@ -88,7 +88,7 @@ function RouteComponent() {
       {/* HERO SECTION */}
       <div style={{ position: 'relative', height: '300px', width: '100%', overflow: 'hidden' }}>
         <img
-          src="/src/assets/online.jpg"
+          src="/assets/online.jpg"
           alt="Add Course"
           style={{ position: 'absolute', inset: 0, height: '100%', width: '100%', objectFit: 'cover', opacity: isDark ? 0.3 : 0.6 }}
         />
