@@ -36,7 +36,7 @@ export function Footer() {
                     </div>
                     <p style={{ fontSize: '0.85rem', color: textSecondary, lineHeight: 1.6 }}>Empowering learners with industry-relevant skills through expert-led courses.</p>
                     <div style={{ marginTop: '1rem', padding: '10px', border: `1px dashed ${borderColor}`, borderRadius: '8px', display: 'inline-block' }}>
-                        <span style={{ fontSize: '0.7rem', fontWeight: 800, color: primaryColor }}>GSTIN: <span style={{ color: textColor }}>[Aapka GST Number]</span></span>
+                        <span style={{ fontSize: '0.7rem', fontWeight: 800, color: primaryColor }}>GSTIN: <span style={{ color: textColor }}>06FAGPM9377H1z4</span></span>
                     </div>
                     <div className="ct-ft-soc-group">
                         {[Instagram, Twitter, Youtube, Facebook].map((Icon, i) => <a key={i} className="ct-ft-soc" href="#"><Icon size={16} /></a>)}
