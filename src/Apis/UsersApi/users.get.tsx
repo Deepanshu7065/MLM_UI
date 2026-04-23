@@ -30,6 +30,7 @@ export const UsersApi = {
         const response = await api.post(`${baseUrl}/send-code`, data)
         return response.data
     },
+    
     verifyCode: async ({ data }: { data: any }) => {
         const response = await api.post(`${baseUrl}/verify-code`, data)
         return response.data
