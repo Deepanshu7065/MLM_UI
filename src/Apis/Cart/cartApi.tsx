@@ -1,6 +1,6 @@
 
 import { baseUrl } from "@/hooks/utils"
-import axios from "axios"
+import { api } from "@/lib/api";
 
 
 type addCourse = {
@@ -9,7 +9,7 @@ type addCourse = {
 }
 export const CartAddApi = {
     addCart: async ({ data }: { data: addCourse }) => {
-        const res = await axios.post(
+        const res = await api.post(
             `${baseUrl}/add-cart`,
             { course_id: data.courseId },
             {
@@ -21,7 +21,7 @@ export const CartAddApi = {
         return res.data;
     },
     removeCart: async ({ data }: { data: addCourse }) => {
-        const res = await axios.delete(`${baseUrl}/remove-cart/${data.courseId}`, {
+        const res = await api.delete(`${baseUrl}/remove-cart/${data.courseId}`, {
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             }
@@ -29,7 +29,7 @@ export const CartAddApi = {
         return res.data
     },
     getCart: async ({ userId }: { userId: string }) => {
-        const res = await axios.get(`${baseUrl}/cart/${userId}`, {
+        const res = await api.get(`${baseUrl}/cart/${userId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

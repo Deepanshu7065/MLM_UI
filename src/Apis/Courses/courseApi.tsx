@@ -1,5 +1,5 @@
-import axios from "axios"
 import { baseUrl } from "@/hooks/utils"
+import { api } from "@/lib/api";
 import type { User } from "@/store/user.store";
 
 
@@ -24,16 +24,16 @@ export type CourseType = {
 
 export const CourseApi = {
     getCourses: async () => {
-        const res = await axios.get(`${baseUrl}/courses`)
+        const res = await api.get(`${baseUrl}/courses`)
         return res.data as CoursesType
     },
     getSingleCourse: async ({ courseId }: { courseId: string }) => {
-        const res = await axios.get(`${baseUrl}/single-course/${courseId}`)
+        const res = await api.get(`${baseUrl}/single-course/${courseId}`)
         return res.data
     },
     createCourseApi: async ({ data }: { data: any }) => {
         console.log("data", data)
-        const res = await axios.post(`${baseUrl}/create_course`, data, {
+        const res = await api.post(`${baseUrl}/create_course`, data, {
             headers: {
                 "Content-Type": "multipart/form-data",
                 "Authorization": `Bearer ${localStorage.getItem("token")}`

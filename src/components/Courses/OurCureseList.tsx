@@ -187,7 +187,7 @@ const OurCureseList = () => {
       `}</style>
 
             <div className="course-grid">
-                {data?.courses.map((item: any, i: number) => (
+                {data?.courses?.map((item: any, i: number) => (
                     <div key={i} className="cc" onClick={() => navigate({ to: `/courses/${item.id}` })}>
 
                         {/* Image */}

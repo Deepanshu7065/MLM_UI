@@ -2,7 +2,7 @@
 
 
 import { baseUrl } from "@/hooks/utils"
-import axios from "axios"
+import { api } from "@/lib/api"
 
 
 export type createOrder = {
@@ -17,7 +17,7 @@ export type createOrder = {
 
 export const OrderApi = {
     addOrder: async ({ data }: { data: createOrder }) => {
-        const res = await axios.post(
+        const res = await api.post(
             `${baseUrl}/create-order`,
             {
                 userId: data.userId,
@@ -36,7 +36,7 @@ export const OrderApi = {
         return res.data;
     },
     removeOrder: async ({ data }: { data: any }) => {
-        const res = await axios.delete(`${baseUrl}/remove-order/${data.courseId}`, {
+        const res = await api.delete(`${baseUrl}/remove-order/${data.courseId}`, {
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             }
@@ -44,7 +44,7 @@ export const OrderApi = {
         return res.data
     },
     getOrder: async () => {
-        const res = await axios.get(`${baseUrl}/orders/`, {
+        const res = await api.get(`${baseUrl}/orders/`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export const OrderApi = {
         return res.data
     },
     getUserOrder: async () => {
-        const res = await axios.get(`${baseUrl}/user-order`, {
+        const res = await api.get(`${baseUrl}/user-order`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -64,7 +64,7 @@ export const OrderApi = {
         return res.data
     },
     getSingleOrder: async ({ orderId }: { orderId: any }) => {
-        const res = await axios.get(`${baseUrl}/single-order/${orderId}`, {
+        const res = await api.get(`${baseUrl}/single-order/${orderId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -84,7 +84,7 @@ export const OrderApi = {
 
 
 // import { baseUrl } from "@/hooks/utils"
-// import axios from "axios"
+// import { api } from "@/lib/api";
 
 
 // export type createOrder = {
@@ -99,7 +99,7 @@ export const OrderApi = {
 
 // export const OrderApi = {
 //     addOrder: async ({ data }: { data: createOrder }) => {
-//         const res = await axios.post(
+//         const res = await api.post(
 //             `${baseUrl}/create-order`,
 //             {
 //                 userId: data.userId,
@@ -118,7 +118,7 @@ export const OrderApi = {
 //         return res.data;
 //     },
 //     removeOrder: async ({ data }: { data: any }) => {
-//         const res = await axios.delete(`${baseUrl}/remove-order/${data.courseId}`, {
+//         const res = await api.delete(`${baseUrl}/remove-order/${data.courseId}`, {
 //             headers: {
 //                 "Authorization": `Bearer ${localStorage.getItem("token")}`
 //             }
@@ -126,7 +126,7 @@ export const OrderApi = {
 //         return res.data
 //     },
 //     getOrder: async () => {
-//         const res = await axios.get(`${baseUrl}/orders/`, {
+//         const res = await api.get(`${baseUrl}/orders/`, {
 //             method: "GET",
 //             headers: {
 //                 "Content-Type": "application/json",
@@ -136,7 +136,7 @@ export const OrderApi = {
 //         return res.data
 //     },
 //     getSingleOrder: async ({ orderId }: { orderId: any }) => {
-//         const res = await axios.get(`${baseUrl}/single-order/${orderId}`, {
+//         const res = await api.get(`${baseUrl}/single-order/${orderId}`, {
 //             method: "GET",
 //             headers: {
 //                 "Content-Type": "application/json",
@@ -146,7 +146,7 @@ export const OrderApi = {
 //         return res.data
 //     },
 //     getUserOrder: async () => {
-//         const res = await axios.get(`${baseUrl}/user-order`, {
+//         const res = await api.get(`${baseUrl}/user-order`, {
 //             method: "GET",
 //             headers: {
 //                 "Content-Type": "application/json",

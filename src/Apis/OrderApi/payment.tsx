@@ -1,5 +1,5 @@
 import { baseUrl } from "@/hooks/utils";
-import axios from "axios";
+import { api } from "@/lib/api";;
 
 export type PaymentType = {
     userId?: string;
@@ -18,28 +18,28 @@ export type VerifyPaymentType = {
 
 export const PaymentApi = {
     initiateCheckout: async (data: PaymentType) => {
-        const res = await axios.post(`${baseUrl}/checkout`, data, {
+        const res = await api.post(`${baseUrl}/checkout`, data, {
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
         });
         return res.data;
     },
 
     verifyPayment: async (data: VerifyPaymentType) => {
-        const res = await axios.post(`${baseUrl}/payment/verify`, data, {
+        const res = await api.post(`${baseUrl}/payment/verify`, data, {
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
         });
         return res.data;
     },
 
     getAllPayment: async () => {
-        const res = await axios.get(`${baseUrl}/get-payment`, {
+        const res = await api.get(`${baseUrl}/get-payment`, {
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
         });
         return res.data;
     },
 
     updatePaymentStatus: async ({ id, data }: { id: string; data: any }) => {
-        const res = await axios.patch(
+        const res = await api.patch(
             `${baseUrl}/update-payment/${id}`,
             data,
             {
@@ -52,14 +52,14 @@ export const PaymentApi = {
     },
 
     createPayment: async (data: any) => {
-        const res = await axios.post(`${baseUrl}/create-payment`, data, {
+        const res = await api.post(`${baseUrl}/create-payment`, data, {
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
         });
         return res.data;
     },
 
     getPaymentByUser: async () => {
-        const res = await axios.get(`${baseUrl}/get-user-payment`, {
+        const res = await api.get(`${baseUrl}/get-user-payment`, {
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
         });
         return res.data;
@@ -71,7 +71,7 @@ export const PaymentApi = {
 
 
 // import { baseUrl } from "@/hooks/utils"
-// import axios from "axios"
+// import { api } from "@/lib/api";
 
 
 // export type paymentType = {
@@ -88,7 +88,7 @@ export const PaymentApi = {
 
 // export const PaymentApi = {
 //     createPayment: async ({ data }: { data: paymentType }) => {
-//         const res = await axios.post(
+//         const res = await api.post(
 //             `${baseUrl}/checkout`,
 //             {
 //                 userId: data.userId,
@@ -109,7 +109,7 @@ export const PaymentApi = {
 //         return res.data;
 //     },
 //     removeOrder: async ({ data }: { data: any }) => {
-//         const res = await axios.delete(`${baseUrl}/remove-order/${data.courseId}`, {
+//         const res = await api.delete(`${baseUrl}/remove-order/${data.courseId}`, {
 //             headers: {
 //                 "Authorization": `Bearer ${localStorage.getItem("token")}`
 //             }
@@ -117,7 +117,7 @@ export const PaymentApi = {
 //         return res.data
 //     },
 //     getUserPayment: async () => {
-//         const res = await axios.get(`${baseUrl}/get-user-payment`, {
+//         const res = await api.get(`${baseUrl}/get-user-payment`, {
 //             method: "GET",
 //             headers: {
 //                 "Content-Type": "application/json",
@@ -128,7 +128,7 @@ export const PaymentApi = {
 //     },
 
 //     getAllPayment: async () => {
-//         const res = await axios.get(`${baseUrl}/get-payment`, {
+//         const res = await api.get(`${baseUrl}/get-payment`, {
 //             method: "GET",
 //             headers: {
 //                 "Content-Type": "application/json",
@@ -138,7 +138,7 @@ export const PaymentApi = {
 //         return res.data
 //     },
 //     updatePayment: async ({ id, data }: { id: string, data: any }) => {
-//         const res = await axios.patch(
+//         const res = await api.patch(
 //             `${baseUrl}/update-payment/${id}`,
 //             data,
 //             {
