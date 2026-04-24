@@ -10,6 +10,7 @@ import { userStore } from '@/store/user.store';
 import { useTheme } from "@/theme/ThemeProvider"
 import { themeColors } from "@/theme/themeConfig"
 import { Loader2 } from "lucide-react"
+import { toast } from 'sonner';
 
 export const Route = createFileRoute('/_protected/addcourses')({
   component: RouteComponent,
@@ -50,12 +51,18 @@ function RouteComponent() {
       }
     },
     onSubmit: async ({ value }: { value: FormData }) => {
-      const fd = new FormData();
-      Object.entries(value).forEach(([key, val]) => {
-        if (!val) return;
-        fd.append(key, val as any);
-      });
-      await mutateAsync({ data: fd });
+      try {
+        const fd = new FormData();
+        Object.entries(value).forEach(([key, val]) => {
+          if (!val) return;
+          fd.append(key, val as any);
+        });
+        await mutateAsync({ data: fd });
+        toast.success("Course added successfully")
+        form.reset();
+      } catch (error) {
+        toast.error("Something went wrong")
+      }
     }
   });
 
