@@ -2,7 +2,7 @@
 
 import { useAppForm } from '@/hooks/useAppForm'
 import { createFileRoute } from '@tanstack/react-router'
-import z from 'zod'
+// import z from 'zod'
 import { FormInput, FormSelectImages } from '@/components/form/FormInput';
 import { useCreateCourseApi } from '@/hooks/courseApi';
 import { useStore } from '@tanstack/react-store';
@@ -22,14 +22,14 @@ interface FormData {
   duration: string; category_id: string; user_id: string;
 }
 
-const addCourses = z.object({
-  course_name: z.string().min(1, "Course name is required"),
-  description: z.string().min(1, "Description is required"),
-  image: z.instanceof(File).or(z.string()).optional(),
-  price: z.string().min(1, "Price is required"),
-  duration: z.string().min(1, "Duration is required"),
-  category_id: z.string().min(1, "Category is required"),
-});
+// const addCourses = z.object({
+//   course_name: z.string().min(1, "Course name is required"),
+//   description: z.string().min(1, "Description is required"),
+//   image: z.instanceof(File).or(z.string()).optional(),
+//   price: z.string().min(1, "Price is required"),
+//   duration: z.string().min(1, "Duration is required"),
+//   category_id: z.string().min(1, "Category is required"),
+// });
 
 function RouteComponent() {
   const { theme } = useTheme()
