@@ -44,12 +44,6 @@ function RouteComponent() {
       course_name: "", description: "", image: "" as any,
       price: "", duration: "", category_id: "", user_id: user?.userId || ""
     },
-    validators: {
-      onChange: ({ value }) => {
-        const result = addCourses.safeParse(value);
-        return result.success ? undefined : result.error.flatten().fieldErrors;
-      }
-    },
     onSubmit: async ({ value }: { value: FormData }) => {
       try {
         const fd = new FormData();
@@ -57,11 +51,13 @@ function RouteComponent() {
           if (!val) return;
           fd.append(key, val as any);
         });
+        console.log(fd)
         await mutateAsync({ data: fd });
         toast.success("Course added successfully")
         form.reset();
-      } catch (error) {
-        toast.error("Something went wrong")
+      } catch (error: any) {
+        console.log(error)
+        toast.error(error?.response?.data?.error || "Failed to add course");
       }
     }
   });

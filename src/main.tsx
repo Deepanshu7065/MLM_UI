@@ -6,6 +6,7 @@ import { routeTree } from './routeTree.gen'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from './theme/ThemeProvider'
 import { SocketProvider } from './context/SocketProvider'
+import { Toaster } from 'sonner'
 
 
 
@@ -28,6 +29,7 @@ if (!rootElement.innerHTML) {
                 <SocketProvider>
                     <QueryClientProvider client={queryClient}>
                         <RouterProvider router={router} />
+                        <Toaster position="top-center" richColors />
                         {/* <GlobalModal /> */}
                     </QueryClientProvider>
                 </SocketProvider>
