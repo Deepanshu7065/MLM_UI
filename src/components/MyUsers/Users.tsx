@@ -4,11 +4,13 @@ import { useState, useMemo } from "react";
 import {
   Users, User, ChevronDown, ChevronRight,
   Search, Grid3x3, GitBranch, Loader2,
-  ArrowDownRight, UserPlus
+  ArrowDownRight, UserPlus,
+  Copy
 } from "lucide-react";
 import { useMyUsers } from "@/hooks/myUsers.query";
 import { useTheme } from "@/theme/ThemeProvider";
 import { themeColors } from "@/theme/themeConfig";
+import { toast } from "sonner";
 
 interface IUserNode {
   id: number; userId: string; name: string; email: string;
@@ -256,7 +258,23 @@ const CompactUserCard = ({ user, isRoot, isExpanded, onToggle }: any) => {
         </div>
         <div>
           <div style={{ fontSize: '1rem', fontWeight: '700' }}>{user.name} {isRoot && " (You)"}</div>
-          <div style={{ fontSize: '0.75rem', opacity: 0.6 }}>{user.userId} • {user.referalCode}</div>
+          <div style={{
+            fontSize: '0.75rem',
+            opacity: 0.6, display: "flex",
+            alignItems: "center", gap: "4px"
+          }}>
+            {user.userId} • {user.referalCode}
+            {user.referalCode &&
+              <Copy size={8} style={{
+                cursor: 'pointer',
+                marginBottom: '2px'
+              }}
+                onClick={() => {
+                  navigator.clipboard.writeText(user.referalCode);
+                  toast.success("Copied to clipboard");
+                }}
+              />
+            }</div>
         </div>
       </div>
       {user.childrenCount > 0 && <div style={{ fontSize: '0.75rem', background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', padding: '4px 12px', borderRadius: '20px', fontWeight: '800' }}>{user.childrenCount} Team</div>}
