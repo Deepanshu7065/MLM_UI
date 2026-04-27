@@ -64,6 +64,30 @@ export const PaymentApi = {
         });
         return res.data;
     },
+    getWithdrawApi: async () => {
+        const res = await api.get(`${baseUrl}/history-withdraw-all`, {
+            headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
+        });
+        return res.data;
+    },
+    getUserWithdrawApi: async () => {
+        const res = await api.get(`${baseUrl}/history-withdraw-my`, {
+            headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
+        })
+        return res.data
+    },
+    updateWithdrawStatus: async ({ id, data }: { id?: string | null; data: any }) => {
+        const res = await api.patch(
+            `${baseUrl}/update-withdraw/${id}`,
+            data,
+            {
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            }
+        );
+        return res.data;
+    }
 };
 
 

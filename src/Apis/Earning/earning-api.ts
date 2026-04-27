@@ -48,4 +48,11 @@ export const EarningApi = {
         });
         return res.data;
     },
+    requestPayment: async ({ userId, amount }: { userId: string, amount: number }) => {
+        const res = await api.post(`${baseUrl}/request-payment`, { userId, amount }, {
+            headers: authHeaders(),
+        });
+        return res.data;
+    },
+
 };

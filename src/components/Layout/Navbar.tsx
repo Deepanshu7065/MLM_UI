@@ -78,6 +78,7 @@ export function Navbar() {
     { to: "/all-users", label: "All Users", icon: Users },
     { to: "/all-orders", label: "All Orders", icon: ListOrdered },
     { to: "/admin-ticket", label: "Ticket", icon: Ticket },
+    { to: "/withdrawal-history", label: "Withdrawal History", icon: CheckCircle2 },
   ];
 
   const isActivityActive = activityLinks.some(l => location.pathname === l.to);

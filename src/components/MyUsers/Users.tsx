@@ -18,14 +18,12 @@ interface IUserNode {
   childrenCount?: number; children?: IUserNode[];
 }
 
-/* ================= NEW GROUPED GRID VIEW ================= */
 const GroupedGridView = ({ rootUsers }: { rootUsers: IUserNode[] }) => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   const c = themeColors;
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Deep filtering to show parent even if child matches search
   const filteredTree = useMemo(() => {
     return rootUsers.map(parent => ({
       ...parent,

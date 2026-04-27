@@ -19,6 +19,7 @@ import { Route as PublicPrivacyPolicyRouteImport } from './routes/_public/privac
 import { Route as PublicHomeRouteImport } from './routes/_public/home'
 import { Route as PublicContactRouteImport } from './routes/_public/contact'
 import { Route as PublicAboutRouteImport } from './routes/_public/about'
+import { Route as ProtectedWithdrawalHistoryRouteImport } from './routes/_protected/withdrawal-history'
 import { Route as ProtectedUsersRouteImport } from './routes/_protected/users'
 import { Route as ProtectedUserTicketRouteImport } from './routes/_protected/user-ticket'
 import { Route as ProtectedPaymentsRouteImport } from './routes/_protected/payments'
@@ -89,6 +90,12 @@ const PublicAboutRoute = PublicAboutRouteImport.update({
   path: '/about',
   getParentRoute: () => PublicRoute,
 } as any)
+const ProtectedWithdrawalHistoryRoute =
+  ProtectedWithdrawalHistoryRouteImport.update({
+    id: '/withdrawal-history',
+    path: '/withdrawal-history',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
 const ProtectedUsersRoute = ProtectedUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -220,6 +227,7 @@ export interface FileRoutesByFullPath {
   '/payments': typeof ProtectedPaymentsRoute
   '/user-ticket': typeof ProtectedUserTicketRoute
   '/users': typeof ProtectedUsersRoute
+  '/withdrawal-history': typeof ProtectedWithdrawalHistoryRoute
   '/about': typeof PublicAboutRoute
   '/contact': typeof PublicContactRoute
   '/home': typeof PublicHomeRoute
@@ -251,6 +259,7 @@ export interface FileRoutesByTo {
   '/payments': typeof ProtectedPaymentsRoute
   '/user-ticket': typeof ProtectedUserTicketRoute
   '/users': typeof ProtectedUsersRoute
+  '/withdrawal-history': typeof ProtectedWithdrawalHistoryRoute
   '/about': typeof PublicAboutRoute
   '/contact': typeof PublicContactRoute
   '/home': typeof PublicHomeRoute
@@ -286,6 +295,7 @@ export interface FileRoutesById {
   '/_protected/payments': typeof ProtectedPaymentsRoute
   '/_protected/user-ticket': typeof ProtectedUserTicketRoute
   '/_protected/users': typeof ProtectedUsersRoute
+  '/_protected/withdrawal-history': typeof ProtectedWithdrawalHistoryRoute
   '/_public/about': typeof PublicAboutRoute
   '/_public/contact': typeof PublicContactRoute
   '/_public/home': typeof PublicHomeRoute
@@ -319,6 +329,7 @@ export interface FileRouteTypes {
     | '/payments'
     | '/user-ticket'
     | '/users'
+    | '/withdrawal-history'
     | '/about'
     | '/contact'
     | '/home'
@@ -350,6 +361,7 @@ export interface FileRouteTypes {
     | '/payments'
     | '/user-ticket'
     | '/users'
+    | '/withdrawal-history'
     | '/about'
     | '/contact'
     | '/home'
@@ -384,6 +396,7 @@ export interface FileRouteTypes {
     | '/_protected/payments'
     | '/_protected/user-ticket'
     | '/_protected/users'
+    | '/_protected/withdrawal-history'
     | '/_public/about'
     | '/_public/contact'
     | '/_public/home'
@@ -474,6 +487,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/about'
       preLoaderRoute: typeof PublicAboutRouteImport
       parentRoute: typeof PublicRoute
+    }
+    '/_protected/withdrawal-history': {
+      id: '/_protected/withdrawal-history'
+      path: '/withdrawal-history'
+      fullPath: '/withdrawal-history'
+      preLoaderRoute: typeof ProtectedWithdrawalHistoryRouteImport
+      parentRoute: typeof ProtectedRoute
     }
     '/_protected/users': {
       id: '/_protected/users'
@@ -661,6 +681,7 @@ interface ProtectedRouteChildren {
   ProtectedPaymentsRoute: typeof ProtectedPaymentsRoute
   ProtectedUserTicketRoute: typeof ProtectedUserTicketRoute
   ProtectedUsersRoute: typeof ProtectedUsersRoute
+  ProtectedWithdrawalHistoryRoute: typeof ProtectedWithdrawalHistoryRoute
   ProtectedMycoursesIdRoute: typeof ProtectedMycoursesIdRoute
   ProtectedMycoursesIndexRoute: typeof ProtectedMycoursesIndexRoute
 }
@@ -682,6 +703,7 @@ const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedPaymentsRoute: ProtectedPaymentsRoute,
   ProtectedUserTicketRoute: ProtectedUserTicketRoute,
   ProtectedUsersRoute: ProtectedUsersRoute,
+  ProtectedWithdrawalHistoryRoute: ProtectedWithdrawalHistoryRoute,
   ProtectedMycoursesIdRoute: ProtectedMycoursesIdRoute,
   ProtectedMycoursesIndexRoute: ProtectedMycoursesIndexRoute,
 }

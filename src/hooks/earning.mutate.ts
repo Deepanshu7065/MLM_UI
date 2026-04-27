@@ -1,6 +1,6 @@
 // src/hooks/earning.mutate.ts
 import { EarningApi } from "@/Apis/Earning/earning-api";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // User
 export const useGetWallet = () => {
@@ -42,4 +42,15 @@ export const useGetAllOrders = () => {
         queryKey: ["admin-orders"],
         staleTime: 30000,
     });
+};
+
+
+export const useRequestWithdrawal = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: EarningApi.requestPayment,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["wallet"] });
+        },
+    })
 };

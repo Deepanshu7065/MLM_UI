@@ -51,7 +51,6 @@ function RouteComponent() {
           if (!val) return;
           fd.append(key, val as any);
         });
-        console.log(fd)
         await mutateAsync({ data: fd });
         toast.success("Course added successfully")
         form.reset();

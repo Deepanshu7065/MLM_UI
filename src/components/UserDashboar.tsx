@@ -20,8 +20,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useState } from "react";
+import WithdrawModal from "./RequestPaymentModal";
 
-const fmt = (n: number) =>
+export const fmt = (n: number) =>
   new Intl.NumberFormat("en-IN", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -69,8 +71,10 @@ function StatCard({ title, value, icon: Icon, accent, sub, isDark }: any) {
 
 export const UserDashboard = () => {
   const { data, isLoading } = useGetWallet();
+  console.log(data)
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
 
   const stats = (data as any)?.wallet;
   const transactions = (data as any)?.transactions ?? [];
@@ -85,7 +89,7 @@ export const UserDashboard = () => {
   return (
     <div style={{
       minHeight: "100%",
-      padding: "clamp(16px, 4vw, 32px)", // Responsive padding
+      padding: "clamp(16px, 4vw, 32px)",
       color: isDark ? "#f8fafc" : "#0f172a",
       fontFamily: "Inter, sans-serif",
     }}>
@@ -99,6 +103,7 @@ export const UserDashboard = () => {
         }
         .balance-chip {
           display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 12px;
+          cursor: pointer;
           font-size: 14px; font-weight: 700; color: #f59e0b; background: ${isDark ? "rgba(245,158,11,0.1)" : "rgba(245,158,11,0.08)"};
           border: 1px solid rgba(245,158,11,0.25);
         }
@@ -122,8 +127,8 @@ export const UserDashboard = () => {
           </div>
           <h1 style={{ fontSize: "clamp(24px, 6vw, 32px)", fontWeight: "900", margin: 0, letterSpacing: "-0.04em" }}>My Dashboard</h1>
         </div>
-        <div className="balance-chip">
-          <Wallet size={16} /> ₹{fmt(stats?.balance ?? 0)}
+        <div className="balance-chip" onClick={() => setIsWithdrawModalOpen(true)}>
+          <Wallet size={16} /> Withdraw Now
         </div>
       </div>
 
@@ -193,6 +198,7 @@ export const UserDashboard = () => {
           </div>
         </CardContent>
       </Card>
+      <WithdrawModal userId={transactions[0]?.userId} isOpen={isWithdrawModalOpen} onClose={() => setIsWithdrawModalOpen(false)} balance={stats?.balance || 0} isDark={isDark} />
     </div>
   );
 };
