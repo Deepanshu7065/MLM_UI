@@ -82,7 +82,7 @@ const GroupedGridView = ({ rootUsers }: { rootUsers: IUserNode[] }) => {
                   <span style={{ fontSize: '0.65rem', padding: '2px 8px', borderRadius: '4px', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', fontWeight: 'bold' }}>DIRECT</span>
                 </div>
                 <p style={{ margin: 0, fontSize: '0.7rem', gap: 4, display: 'flex', alignItems: 'center', opacity: 0.7 }}>
-                  ID: {parent.userId} | {parent.referalCode}
+                  REF :- {parent.referalCode}
                   {parent.referalCode &&
                     <Copy size={8} style={{
                       cursor: 'pointer',
@@ -274,7 +274,7 @@ const CompactUserCard = ({ user, isRoot, isExpanded, onToggle }: any) => {
             opacity: 0.6, display: "flex",
             alignItems: "center", gap: "4px"
           }}>
-            {user.userId} • {user.referalCode}
+            REF :- • {user.referalCode}
             {user.referalCode &&
               <Copy size={8} style={{
                 cursor: 'pointer',

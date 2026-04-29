@@ -288,17 +288,77 @@ export function Navbar() {
             <LayoutDashboard size={19} color={isDark ? "#000" : "#fff"} />
           </div>
           <span className="logo-font" style={{ fontSize: "1.15rem", fontWeight: 800, color: text, letterSpacing: "-0.5px" }}>
-            DM <span style={{ color: primary }}>
+            DM <span style={{ color: primary, letterSpacing: "-0.5px", fontSize: "1.15rem", fontWeight: 600 }}>
               ADV</span>
-            <span className="logo-suffix" style={{ color: text, fontWeight: 600 }}>
+            <span className="logo-suffix" style={{ color: text, fontWeight: 600, letterSpacing: "-0.5px", fontSize: "1.15rem" }}>
               ANCE
-              </span>
+            </span>
+            <span className="logo-suffix" style={{ color: primary, fontWeight: 600, marginLeft: "6px", letterSpacing: "-0.5px", fontSize: "1.15rem" }}>
               TECH
+            </span>
           </span>
         </div>
 
-        <span style={{ fontSize: "0.8rem", fontWeight: "800", color: "#64748b", textTransform: 'uppercase' as const }}>
-          {userDetails?.userId}
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+            padding: "8px 14px",
+            borderRadius: "999px",
+            fontSize: "0.78rem",
+            fontWeight: 700,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+
+            background:
+              theme === "dark"
+                ? "rgba(148,163,184,0.12)"
+                : "rgba(15,23,42,0.06)",
+
+            color:
+              theme === "dark"
+                ? "#e2e8f0"
+                : "#334155",
+
+            border:
+              theme === "dark"
+                ? "1px solid rgba(148,163,184,.25)"
+                : "1px solid rgba(148,163,184,.35)",
+
+            boxShadow:
+              theme === "dark"
+                ? "0 2px 10px rgba(0,0,0,.25)"
+                : "0 2px 8px rgba(15,23,42,.06)",
+
+            backdropFilter: "blur(8px)"
+          }}
+        >
+          <span
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: "50%",
+              background: "#22c55e",
+              boxShadow: "0 0 8px rgba(34,197,94,.6)"
+            }}
+          />
+
+          <span style={{ opacity: .75 }}>User ID</span>
+
+          <span
+            style={{
+              fontWeight: 800,
+              padding: "2px 8px",
+              borderRadius: "8px",
+              background:
+                theme === "dark"
+                  ? "rgba(255,255,255,.06)"
+                  : "rgba(255,255,255,.85)"
+            }}
+          >
+            {userDetails?.userId}
+          </span>
         </span>
 
         {/* ── Desktop Nav ── */}

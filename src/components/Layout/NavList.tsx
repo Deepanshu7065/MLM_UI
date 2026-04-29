@@ -189,7 +189,7 @@ export function NavList() {
           <span className="syne" style={{ fontSize: "1.15rem", fontWeight: 800, color: text, letterSpacing: "-0.4px" }}>
             DM <span style={{ color: primary }}>ADV</span>
             <span className="nl-tech-suffix" style={{ color: text, fontWeight: 600 }}>ANCE</span>
-            <span className="nl-tech-suffix" style={{ color: primary, fontWeight: 600 }}>
+            <span className="nl-tech-suffix" style={{ color: primary, fontWeight: 600, marginLeft: "6px" }}>
               TECH
             </span>
           </span>
