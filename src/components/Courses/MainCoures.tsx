@@ -86,7 +86,7 @@ function MainCourses() {
                             border: `1px solid ${isDark ? 'rgba(107, 255, 0, 0.2)' : 'rgba(37, 99, 235, 0.2)'}`,
                             padding: '0.6rem 1.2rem', borderRadius: '12px',
                             display: 'flex', alignItems: 'center', gap: '0.6rem',
-                            color: isDark ? c.primary.dark : c.primary.light, 
+                            color: isDark ? c.primary.dark : c.primary.light,
                             cursor: 'pointer',
                         }}
                     >
@@ -117,7 +117,7 @@ function MainCourses() {
                             <div style={{ position: 'relative', overflow: 'hidden' }}>
                                 <img
                                     className="course-card-img"
-                                    src={`${item.image}`}
+                                    src={item.image}
                                     alt={item.course_name}
                                 />
                                 <div style={{

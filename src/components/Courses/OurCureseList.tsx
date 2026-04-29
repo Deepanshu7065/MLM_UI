@@ -194,7 +194,7 @@ const OurCureseList = () => {
             <div className="cc-img-wrap">
               <img
                 className="cc-img"
-                src={`${item.image}`}
+                src={item.image}
                 alt={item.course_name}
               />
               <div className="cc-img-overlay" />

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Lock } from "lucide-react";
-import { imageUrl } from "@/hooks/utils";
+// import { imageUrl } from "@/hooks/utils";
 
 interface OrderSummaryProps {
     cart: any[];
