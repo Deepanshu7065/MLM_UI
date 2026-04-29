@@ -297,6 +297,10 @@ export function Navbar() {
           </span>
         </div>
 
+        <span style={{ fontSize: "0.8rem", fontWeight: "800", color: "#64748b", textTransform: 'uppercase' as const }}>
+          {userDetails?.userId}
+        </span>
+
         {/* ── Desktop Nav ── */}
         <div style={{ display: "flex", alignItems: "center", gap: "0" }}>
           <nav className="desktop-links">
