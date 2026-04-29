@@ -106,7 +106,6 @@ function TermsComponent() {
             background: isDark ? '#ffffff03' : '#00000003'
           }}
         >
-
           <h2
             style={{
               display: 'flex',
@@ -121,21 +120,29 @@ function TermsComponent() {
           </h2>
 
           <p>
-            We strive to accurately represent our products and services,
-            however we do not guarantee specific success results.
-            Testimonials shown are exceptional examples and not guarantees.
+            We strive to provide accurate guidance, quality products
+            and valuable learning resources. However, we do not guarantee
+            specific results, profits, success or outcomes.
           </p>
 
           <p>
-            Success depends on your effort, background,
-            dedication and implementation.
+            Any success achieved through the use of our services depends on
+            individual effort, skill, experience, consistency, decision-making
+            and implementation.
           </p>
 
           <p>
-            Business and online learning involve inherent risks.
-            You agree to perform your own due diligence.
-            DM Advance Tech is not responsible for business outcomes,
-            profits, losses or results arising from use of our offerings.
+            Likewise, any failure, losses or unsatisfactory results may arise
+            from personal choices, market risks, business uncertainties or
+            other factors beyond our control.
+          </p>
+
+          <p>
+            By using our services, you acknowledge that both success and failure
+            are subject to individual circumstances, and
+            <strong> DM Advance Tech</strong> shall not be held responsible for
+            either profits gained or losses incurred from applying our content,
+            products or services.
           </p>
 
         </section>
