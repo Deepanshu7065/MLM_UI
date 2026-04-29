@@ -26,7 +26,7 @@ function RouteComponent() {
   const contactDetails = [
     { icon: PhoneCall, label: "Phone", value: "7065867460, 9953739746" },
     { icon: Mail, label: "Email", value: "deepanshu.ss00ss.10@gmail.com" },
-    { icon: Building2, label: "Office", value: "MD TECH PRIVATE LIMITED" },
+    { icon: Building2, label: "Office", value: "DM ADVANCE TECH " },
     { icon: MapPin, label: "Address", value: "4th Floor, Khandsa Road, Gurugram (122001), Haryana" },
     { icon: Clock, label: "Hours", value: "Mon – Sat, 9:00 AM – 6:00 PM" },
   ]

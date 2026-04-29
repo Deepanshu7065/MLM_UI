@@ -288,7 +288,12 @@ export function Navbar() {
             <LayoutDashboard size={19} color={isDark ? "#000" : "#fff"} />
           </div>
           <span className="logo-font" style={{ fontSize: "1.15rem", fontWeight: 800, color: text, letterSpacing: "-0.5px" }}>
-            DM <span style={{ color: primary }}>ADV</span><span className="logo-suffix" style={{ color: text, fontWeight: 600 }}>ANCE</span>
+            DM <span style={{ color: primary }}>
+              ADV</span>
+            <span className="logo-suffix" style={{ color: text, fontWeight: 600 }}>
+              ANCE
+              </span>
+              TECH
           </span>
         </div>
 
