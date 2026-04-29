@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 import { CourseApi } from "@/Apis/Courses/courseApi"
 import { useTheme } from "@/theme/ThemeProvider"
 import { getThemeColor } from "@/theme/themeConfig"
-import { imageUrl } from "@/hooks/utils"
+// import { imageUrl } from "@/hooks/utils"
 import { useNavigate } from "@tanstack/react-router"
 import { Clock, BookOpen, ArrowRight, Lock } from "lucide-react"
 

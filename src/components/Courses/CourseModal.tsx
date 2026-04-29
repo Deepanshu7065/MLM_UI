@@ -1,7 +1,7 @@
 "use client"
 
 import { useGetSingleCourseApi } from "@/hooks/courseApi";
-import { imageUrl } from "@/hooks/utils";
+// import { imageUrl } from "@/hooks/utils";
 import { useNavigate, useRouter } from "@tanstack/react-router";
 import { Clock, IndianRupee, ArrowLeft, ArrowRight, Bookmark } from "lucide-react";
 import { useStore } from "@tanstack/react-store";

@@ -5,7 +5,7 @@ import { useStore } from "@tanstack/react-store";
 import { CourseStore } from "./addCourseStore";
 import { useNavigate } from "@tanstack/react-router";
 import { GetSingleUser } from "@/hooks/useUser";
-import { imageUrl } from "@/hooks/utils";
+// import { imageUrl } from "@/hooks/utils";
 import { useTheme } from "@/theme/ThemeProvider";
 import { themeColors } from "@/theme/themeConfig";
 
