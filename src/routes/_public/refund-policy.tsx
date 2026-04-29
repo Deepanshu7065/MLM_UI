@@ -147,7 +147,7 @@ function RefundComponent() {
 
           <p>
             To request a refund email us at:
-            <strong> dmadvancetech.com</strong>
+            <strong> deepanshu.ss00ss.10@gmail.com</strong>
           </p>
 
           <p>
