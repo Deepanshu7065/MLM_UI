@@ -1,7 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useTheme } from "@/theme/ThemeProvider"
 import { getThemeColor } from "@/theme/themeConfig"
-import { FileText, Scale, UserCheck, AlertTriangle } from 'lucide-react'
+import {
+  FileText,
+  Scale,
+  UserCheck,
+  AlertTriangle
+} from 'lucide-react'
 import { Footer } from '@/hooks/footer'
 
 export const Route = createFileRoute('/_public/terms')({
@@ -9,33 +14,242 @@ export const Route = createFileRoute('/_public/terms')({
 })
 
 function TermsComponent() {
+
   const { theme } = useTheme()
+
   const primaryColor = getThemeColor(theme, 'primary')
   const textColor = getThemeColor(theme, 'text')
+  const isDark = theme === 'dark'
 
   return (
-    <div style={{ backgroundColor: getThemeColor(theme, 'background'), color: textColor, minHeight: '100vh' }}>
-      <div style={{ padding: '8rem 2rem 4rem', textAlign: 'center', background: `${primaryColor}10` }}>
-        <FileText size={60} color={primaryColor} style={{ margin: '0 auto 1.5rem' }} />
-        <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 900, margin: 0 }}>Terms & <span style={{ color: primaryColor }}>Conditions</span></h1>
+    <div
+      style={{
+        backgroundColor: getThemeColor(theme, 'background'),
+        color: textColor,
+        minHeight: '100vh'
+      }}
+    >
+
+      <div
+        style={{
+          padding: '8rem 2rem 4rem',
+          textAlign: 'center',
+          background: `${primaryColor}10`
+        }}
+      >
+        <FileText
+          size={60}
+          color={primaryColor}
+          style={{ margin: '0 auto 1.5rem' }}
+        />
+
+        <h1
+          style={{
+            fontSize: 'clamp(2rem,5vw,3rem)',
+            fontWeight: 900,
+            margin: 0
+          }}
+        >
+          Terms & <span style={{ color: primaryColor }}>Conditions</span>
+        </h1>
+
       </div>
 
-      <div style={{ maxWidth: '850px', margin: '0 auto', padding: '4rem 2rem', lineHeight: 1.8 }}>
-        <section style={{ marginBottom: '3rem' }}>
-          <h2 style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '1.5rem', color: primaryColor }}><UserCheck size={22} /> 1. Account Eligibility</h2>
-          <p>By using <strong>DM Advance Tech</strong>, you represent that you are at least 18 years of age or are accessing the site under the supervision of a parent or guardian. You are responsible for maintaining the confidentiality of your account credentials.</p>
-        </section>
+
+
+      <div
+        style={{
+          maxWidth: '850px',
+          margin: '0 auto',
+          padding: '4rem 2rem',
+          lineHeight: 1.8
+        }}
+      >
 
         <section style={{ marginBottom: '3rem' }}>
-          <h2 style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '1.5rem', color: primaryColor }}><Scale size={22} /> 2. Intellectual Property</h2>
-          <p>All content provided on this platform, including videos, PDFs, and code snippets, is the property of <strong>MD TECH PRIVATE LIMITED</strong>. Unauthorized distribution or commercial use of our materials is strictly prohibited.</p>
+          <h2
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              fontSize: '1.5rem',
+              color: primaryColor
+            }}
+          >
+            <UserCheck size={22} />
+            1. Acceptance of Terms
+          </h2>
+
+          <p>
+            Welcome to <strong>DM Advance Tech</strong>.
+            By accessing or using our website and services,
+            you agree to be bound by these Terms and our Privacy Policy.
+            If you do not agree, you should not use the Service.
+          </p>
+
+          <p>
+            These Terms apply to all visitors, users and customers
+            using the platform.
+          </p>
+
         </section>
 
-        <section style={{ marginBottom: '3rem' }}>
-          <h2 style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '1.5rem', color: primaryColor }}><AlertTriangle size={22} /> 3. Limitation of Liability</h2>
-          <p>We strive for 100% uptime and accurate content, but we do not guarantee that the platform will be error-free. <strong>MD TECH PRIVATE LIMITED</strong> is not liable for any indirect damages resulting from the use of our services.</p>
+
+
+
+        <section
+          style={{
+            marginBottom: '3rem',
+            padding: '2rem',
+            borderRadius: '16px',
+            border: `1px solid ${primaryColor}30`,
+            background: isDark ? '#ffffff03' : '#00000003'
+          }}
+        >
+
+          <h2
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              fontSize: '1.5rem',
+              color: primaryColor
+            }}
+          >
+            <AlertTriangle size={22} />
+            2. Disclaimer & User Responsibility
+          </h2>
+
+          <p>
+            We strive to accurately represent our products and services,
+            however we do not guarantee specific success results.
+            Testimonials shown are exceptional examples and not guarantees.
+          </p>
+
+          <p>
+            Success depends on your effort, background,
+            dedication and implementation.
+          </p>
+
+          <p>
+            Business and online learning involve inherent risks.
+            You agree to perform your own due diligence.
+            DM Advance Tech is not responsible for business outcomes,
+            profits, losses or results arising from use of our offerings.
+          </p>
+
         </section>
+
+
+
+
+        <section style={{ marginBottom: '3rem' }}>
+          <h2
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              fontSize: '1.5rem',
+              color: primaryColor
+            }}
+          >
+            <Scale size={22} />
+            3. Content & Intellectual Property
+          </h2>
+
+          <p>
+            You are responsible for any content you submit or share
+            through our Service.
+            You confirm such content does not violate the rights of others.
+          </p>
+
+          <p>
+            All platform materials including videos,
+            documents, resources and training content belong to
+            <strong> DM Advance Tech</strong>.
+            Unauthorized copying, resale, redistribution or commercial use
+            without written permission is prohibited.
+          </p>
+
+          <p>
+            We reserve the right to remove content or terminate accounts
+            in cases of infringement or misuse.
+          </p>
+
+        </section>
+
+
+
+
+        <section style={{ marginBottom: '3rem' }}>
+          <h2
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              fontSize: '1.5rem',
+              color: primaryColor
+            }}
+          >
+            <UserCheck size={22} />
+            4. User Conduct & Account Termination
+          </h2>
+
+          <ul style={{ paddingLeft: '1.5rem' }}>
+            <li>Users must provide truthful information</li>
+            <li>No misrepresentation or misuse of the platform</li>
+            <li>Violation of terms may lead to account suspension or termination</li>
+            <li>Users should periodically review updated terms</li>
+          </ul>
+
+          <p>
+            We reserve the right to modify these Terms at any time.
+            Material changes may be communicated to users.
+          </p>
+
+        </section>
+
+
+
+
+        <section
+          style={{
+            marginBottom: '3rem',
+            padding: '2rem',
+            borderRadius: '16px',
+            border: `1px solid ${primaryColor}30`,
+            background: isDark ? '#ffffff03' : '#00000003'
+          }}
+        >
+
+          <h2
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              fontSize: '1.5rem',
+              color: primaryColor
+            }}
+          >
+            <FileText size={22} />
+            5. Digital Delivery (Shipping Policy)
+          </h2>
+
+          <p>
+            Our products are digital products delivered electronically
+            through email or our platform.
+            No physical shipping is involved.
+          </p>
+
+          <p>
+            Access details or digital products are provided through
+            the registered email or user account after purchase.
+          </p>
+
+        </section>
+
       </div>
+
       <Footer />
     </div>
   )
