@@ -2,14 +2,14 @@ import React from 'react';
 import { useGetAllOrder } from '@/hooks/Order.mutate';
 import { useTheme } from '@/theme/ThemeProvider';
 import { themeColors } from '@/theme/themeConfig';
-import { 
-    CreditCard, 
-    Calendar, 
-    CheckCircle2, 
-    Clock, 
-    User, 
-    Mail, 
-    Phone, 
+import {
+    CreditCard,
+    Calendar,
+    CheckCircle2,
+    Clock,
+    User,
+    Mail,
+    Phone,
     Layers
 } from 'lucide-react';
 import { imageUrl } from '@/hooks/utils';
@@ -108,15 +108,15 @@ const AllOrder = () => {
                 {/* Orders Map */}
                 {data?.orders?.map((order: any) => (
                     <div key={order.orderId} style={orderCardStyle}>
-                        
+
                         {/* 1. Top Bar: Order ID & Status */}
-                        <div style={{ 
-                            display: 'flex', 
-                            justifyContent: 'space-between', 
-                            alignItems: 'center', 
-                            marginBottom: '2rem', 
-                            paddingBottom: '1rem', 
-                            borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}` 
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginBottom: '2rem',
+                            paddingBottom: '1rem',
+                            borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`
                         }}>
                             <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
                                 <div>
@@ -138,18 +138,18 @@ const AllOrder = () => {
 
                         {/* 2. Main Grid */}
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
-                            
+
                             {/* Customer Column */}
                             <div>
                                 <h3 style={sectionTitleStyle}><User size={16} /> Customer Profile</h3>
                                 <div style={infoBoxStyle}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.2rem' }}>
-                                        <div style={{ 
-                                            width: '48px', height: '48px', borderRadius: '14px', 
-                                            backgroundColor: isDark ? c.primary.dark : c.primary.light, 
-                                            color: isDark ? '#000' : '#fff', 
-                                            display: 'flex', alignItems: 'center', justifyContent: 'center', 
-                                            fontWeight: '900', fontSize: '1.2rem' 
+                                        <div style={{
+                                            width: '48px', height: '48px', borderRadius: '14px',
+                                            backgroundColor: isDark ? c.primary.dark : c.primary.light,
+                                            color: isDark ? '#000' : '#fff',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            fontWeight: '900', fontSize: '1.2rem'
                                         }}>
                                             {order.user?.name?.charAt(0) || 'U'}
                                         </div>
@@ -160,7 +160,7 @@ const AllOrder = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', paddingTop: '1rem', borderTop: `1px dashed ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}` }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
                                             <span style={{ opacity: 0.6 }}>User ID:</span>
@@ -181,17 +181,17 @@ const AllOrder = () => {
                                 <h3 style={sectionTitleStyle}><Layers size={16} /> Course Enrollment ({order.quantity})</h3>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                     {order.ordered_courses?.map((course: any) => (
-                                        <div key={course.id} style={{ 
-                                            display: 'flex', alignItems: 'center', gap: '1rem', 
-                                            padding: '0.8rem', borderRadius: '1rem', 
+                                        <div key={course.id} style={{
+                                            display: 'flex', alignItems: 'center', gap: '1rem',
+                                            padding: '0.8rem', borderRadius: '1rem',
                                             backgroundColor: isDark ? 'rgba(255,255,255,0.02)' : '#fff',
                                             border: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`,
                                             boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
                                         }}>
-                                            <img 
-                                                src={`${imageUrl}${course.image}`} 
-                                                alt={course.course_name} 
-                                                style={{ width: '50px', height: '50px', borderRadius: '10px', objectFit: 'cover' }} 
+                                            <img
+                                                src={`${course.image}`}
+                                                alt={course.course_name}
+                                                style={{ width: '50px', height: '50px', borderRadius: '10px', objectFit: 'cover' }}
                                             />
                                             <div style={{ flex: 1 }}>
                                                 <div style={{ fontWeight: '700', fontSize: '0.9rem', marginBottom: '2px' }}>{course.course_name}</div>
@@ -205,14 +205,14 @@ const AllOrder = () => {
                         </div>
 
                         {/* 3. Payment Footer */}
-                        <div style={{ 
-                            marginTop: '2rem', 
-                            padding: '1.2rem 1.5rem', 
-                            borderRadius: '1.2rem', 
-                            background: isDark ? 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)' : '#f1f5f9', 
-                            display: 'flex', 
-                            justifyContent: 'space-between', 
-                            alignItems: 'center' 
+                        <div style={{
+                            marginTop: '2rem',
+                            padding: '1.2rem 1.5rem',
+                            borderRadius: '1.2rem',
+                            background: isDark ? 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)' : '#f1f5f9',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center'
                         }}>
                             <div style={{ display: 'flex', gap: '2.5rem' }}>
                                 <div>

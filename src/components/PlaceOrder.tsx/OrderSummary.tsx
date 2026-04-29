@@ -59,7 +59,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                         >
                             <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
                                 <img
-                                    src={`${imageUrl}${item.course.image}`}
+                                    src={`${item.course.image}`}
                                     alt={item.course.course_name}
                                     style={{
                                         width: "50px",
@@ -149,7 +149,7 @@ export default OrderSummary;
 //                         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
 //                             <img
 //                                 alt=""
-//                                 src={`${imageUrl}${item.course.image}`}
+//                                 src={`${item.course.image}`}
 //                                 style={{ width: "45px", height: "30px", borderRadius: "4px", objectFit: "cover" }}
 //                             />
 //                             <p style={{ fontSize: "0.85rem", fontWeight: "700", maxWidth: "140px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>

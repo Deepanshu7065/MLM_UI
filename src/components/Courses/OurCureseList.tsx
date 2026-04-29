@@ -9,26 +9,26 @@ import { useNavigate } from "@tanstack/react-router"
 import { Clock, BookOpen, ArrowRight, Lock } from "lucide-react"
 
 const OurCureseList = () => {
-    const { theme } = useTheme()
-    const isDark = theme === "dark"
-    const navigate = useNavigate()
+  const { theme } = useTheme()
+  const isDark = theme === "dark"
+  const navigate = useNavigate()
 
-    const textColor = getThemeColor(theme, "text")
-    const textSecondary = getThemeColor(theme, "textSecondary")
-    const primaryColor = getThemeColor(theme, "primary")
-    // const primaryHover = getThemeColor(theme, "primaryHover")
-    const borderColor = getThemeColor(theme, "border")
-    const cardBg = isDark ? "#111827" : "#ffffff"
+  const textColor = getThemeColor(theme, "text")
+  const textSecondary = getThemeColor(theme, "textSecondary")
+  const primaryColor = getThemeColor(theme, "primary")
+  // const primaryHover = getThemeColor(theme, "primaryHover")
+  const borderColor = getThemeColor(theme, "border")
+  const cardBg = isDark ? "#111827" : "#ffffff"
 
-    const { data, isLoading } = useQuery({
-        queryKey: ["courses"],
-        queryFn: () => CourseApi.getCourses(),
-    })
+  const { data, isLoading } = useQuery({
+    queryKey: ["courses"],
+    queryFn: () => CourseApi.getCourses(),
+  })
 
-    if (isLoading) {
-        return (
-            <div style={{ padding: "3rem 0" }}>
-                <style>{`
+  if (isLoading) {
+    return (
+      <div style={{ padding: "3rem 0" }}>
+        <style>{`
           .skeleton-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -46,25 +46,25 @@ const OurCureseList = () => {
           .skeleton-line { height: 12px; border-radius: 6px; background: ${isDark ? "#334155" : "#e2e8f0"}; }
           @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
         `}</style>
-                <div className="skeleton-grid">
-                    {Array.from({ length: 6 }).map((_, i) => (
-                        <div key={i} className="skeleton-card">
-                            <div className="skeleton-img" />
-                            <div className="skeleton-body">
-                                <div className="skeleton-line" style={{ width: "75%" }} />
-                                <div className="skeleton-line" style={{ width: "55%" }} />
-                                <div className="skeleton-line" style={{ width: "40%", marginTop: "0.4rem" }} />
-                            </div>
-                        </div>
-                    ))}
-                </div>
+        <div className="skeleton-grid">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="skeleton-card">
+              <div className="skeleton-img" />
+              <div className="skeleton-body">
+                <div className="skeleton-line" style={{ width: "75%" }} />
+                <div className="skeleton-line" style={{ width: "55%" }} />
+                <div className="skeleton-line" style={{ width: "40%", marginTop: "0.4rem" }} />
+              </div>
             </div>
-        )
-    }
+          ))}
+        </div>
+      </div>
+    )
+  }
 
-    return (
-        <>
-            <style>{`
+  return (
+    <>
+      <style>{`
         *, *::before, *::after { box-sizing: border-box; }
 
         /* ── Grid: 3 col desktop, 2 tablet, 1 mobile ── */
@@ -93,8 +93,8 @@ const OurCureseList = () => {
           .cc:hover {
             transform: translateY(-6px);
             box-shadow: ${isDark
-                    ? "0 24px 40px rgba(0,0,0,0.55)"
-                    : "0 24px 40px rgba(0,0,0,0.1)"};
+          ? "0 24px 40px rgba(0,0,0,0.55)"
+          : "0 24px 40px rgba(0,0,0,0.1)"};
           }
         }
 
@@ -186,48 +186,48 @@ const OurCureseList = () => {
         .cc-btn:active { transform: translateY(0); }
       `}</style>
 
-            <div className="course-grid">
-                {data?.courses?.map((item: any, i: number) => (
-                    <div key={i} className="cc" onClick={() => navigate({ to: `/courses/${item.id}` })}>
+      <div className="course-grid">
+        {data?.courses?.map((item: any, i: number) => (
+          <div key={i} className="cc" onClick={() => navigate({ to: `/courses/${item.id}` })}>
 
-                        {/* Image */}
-                        <div className="cc-img-wrap">
-                            <img
-                                className="cc-img"
-                                src={`${imageUrl}${item.image}`}
-                                alt={item.course_name}
-                            />
-                            <div className="cc-img-overlay" />
-                            <span className="cc-premium">Premium</span>
-                            <span className="cc-price">₹{item.price}</span>
-                        </div>
-
-                        {/* Body */}
-                        <div className="cc-body">
-                            <h3 className="cc-title">{item.course_name}</h3>
-                            <p className="cc-desc">{item.description}</p>
-
-                            <div className="cc-meta">
-                                <span className="cc-meta-chip">
-                                    <Clock size={11} /> {item.duration}w
-                                </span>
-                                <span className="cc-meta-chip">
-                                    <BookOpen size={11} /> {item.lessons || "0"} lessons
-                                </span>
-                            </div>
-
-                            <button
-                                className="cc-btn"
-                                onClick={(e) => { e.stopPropagation(); alert("First you need to login"); }}
-                            >
-                                <Lock size={13} /> Enroll Now <ArrowRight size={13} />
-                            </button>
-                        </div>
-                    </div>
-                ))}
+            {/* Image */}
+            <div className="cc-img-wrap">
+              <img
+                className="cc-img"
+                src={`${item.image}`}
+                alt={item.course_name}
+              />
+              <div className="cc-img-overlay" />
+              <span className="cc-premium">Premium</span>
+              <span className="cc-price">₹{item.price}</span>
             </div>
-        </>
-    )
+
+            {/* Body */}
+            <div className="cc-body">
+              <h3 className="cc-title">{item.course_name}</h3>
+              <p className="cc-desc">{item.description}</p>
+
+              <div className="cc-meta">
+                <span className="cc-meta-chip">
+                  <Clock size={11} /> {item.duration}w
+                </span>
+                <span className="cc-meta-chip">
+                  <BookOpen size={11} /> {item.lessons || "0"} lessons
+                </span>
+              </div>
+
+              <button
+                className="cc-btn"
+                onClick={(e) => { e.stopPropagation(); alert("First you need to login"); }}
+              >
+                <Lock size={13} /> Enroll Now <ArrowRight size={13} />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  )
 }
 
 export default OurCureseList

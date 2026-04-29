@@ -117,7 +117,7 @@ function MainCourses() {
                             <div style={{ position: 'relative', overflow: 'hidden' }}>
                                 <img
                                     className="course-card-img"
-                                    src={`${imageUrl}${item.image}`}
+                                    src={`${item.image}`}
                                     alt={item.course_name}
                                 />
                                 <div style={{

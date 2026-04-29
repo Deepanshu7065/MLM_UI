@@ -5,7 +5,7 @@ import { useStore } from "@tanstack/react-store";
 import { courseActions, CourseStore } from "./addCourseStore";
 import { useNavigate } from "@tanstack/react-router";
 import { useGetCart, useRemoveCart } from "@/hooks/cart.mutate";
-import { imageUrl } from "@/hooks/utils";
+// import { imageUrl } from "@/hooks/utils";
 import { useTheme } from "@/theme/ThemeProvider";
 import { themeColors } from "@/theme/themeConfig";
 import { Loader2, ShoppingBag, Trash2 } from "lucide-react";
@@ -116,7 +116,7 @@ const CartView = () => {
                         {cart.map((item) => (
                             <div key={item.id} className="cart-item-card">
                                 <div className="item-image">
-                                    <img src={`${imageUrl}${item.course?.image}`} alt="" />
+                                    <img src={`${item.course?.image}`} alt="" />
                                 </div>
 
                                 <div style={{ flex: 1, paddingLeft: '1.5rem' }} className="price-section">

@@ -84,7 +84,7 @@ export const ViewOpenCourseDetails = () => {
             {/* Banner Section */}
             <div className="hero-banner">
                 <img
-                    src={`${imageUrl}${course.image}`}
+                    src={`${course.image}`}
                     alt=""
                     style={{ position: 'absolute', right: '0', width: '50%', height: '100%', objectFit: 'cover', opacity: 0.5, maskImage: 'linear-gradient(to left, black, transparent)' }}
                 />
@@ -146,7 +146,7 @@ export const ViewOpenCourseDetails = () => {
                 <div className="desktop-sidebar">
                     <div style={{ position: 'sticky', top: '2rem', backgroundColor: card, borderRadius: '2rem', padding: '1.8rem', border: `1px solid ${border}` }}>
                         <div style={{ height: '200px', borderRadius: '1.25rem', overflow: 'hidden', marginBottom: '1.5rem' }}>
-                            <img src={`${imageUrl}${course.image}`} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            <img src={`${course.image}`} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         </div>
 
                         <div style={{ marginBottom: '1.5rem' }}>

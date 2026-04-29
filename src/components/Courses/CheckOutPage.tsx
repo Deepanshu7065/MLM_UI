@@ -227,7 +227,7 @@ const PayoutPage = () => {
                             {cart.map((item) => (
                                 <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                                        <img src={`${imageUrl}${item.course.image}`} alt="failed" style={{ width: '50px', height: '35px', borderRadius: '0.5rem', objectFit: 'cover' }} />
+                                        <img src={`${item.course.image}`} alt="failed" style={{ width: '50px', height: '35px', borderRadius: '0.5rem', objectFit: 'cover' }} />
                                         <p style={{ fontSize: '0.85rem', fontWeight: '700', color: isDark ? '#cbd5e1' : '#1e293b' }}>{item.course.course_name}</p>
                                     </div>
                                     <span style={{ fontSize: '0.85rem', fontWeight: '800' }}>₹{item.course.price}</span>

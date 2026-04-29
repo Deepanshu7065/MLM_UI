@@ -117,7 +117,7 @@ const UserOrder = () => {
                                             style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', cursor: 'pointer' }}
                                         >
                                             <img
-                                                src={`${imageUrl}${course.image}`}
+                                                src={`${course.image}`}
                                                 alt={course.course_name}
                                                 style={{ width: '56px', height: '56px', borderRadius: '0.75rem', objectFit: 'cover' }}
                                             />
