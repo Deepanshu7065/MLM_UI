@@ -135,7 +135,7 @@ function PrivacyComponent() {
           </ul>
 
           <p>
-            We do not sell your personal information.
+            We do not sell  your personal information.
           </p>
 
         </section>
