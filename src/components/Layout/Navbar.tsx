@@ -104,7 +104,7 @@ export function Navbar() {
         * { box-sizing: border-box; }
 
         .nav-wrap {
-          width: 100%; max-width: 90rem; margin: 0 auto;
+          width: 100%; max-width: 94rem; margin: 0 auto;
           padding: 0 1.5rem; display: flex; align-items: center;
           justify-content: space-between; gap: 1rem;
           font-family: 'DM Sans', sans-serif;
@@ -336,7 +336,7 @@ export function Navbar() {
         >
           <span
             style={{
-              width: 8,
+              width: 9,
               height: 8,
               borderRadius: "50%",
               background: "#22c55e",
@@ -349,7 +349,7 @@ export function Navbar() {
           <span
             style={{
               fontWeight: 800,
-              padding: "2px 8px",
+              padding: "2px 3px",
               borderRadius: "8px",
               background:
                 theme === "dark"
