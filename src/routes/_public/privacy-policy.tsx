@@ -5,7 +5,9 @@ import {
   ShieldCheck,
   Lock,
   Eye,
-  Database
+  Database,
+  Users,
+  Mail
 } from 'lucide-react'
 import { Footer } from '@/hooks/footer'
 
@@ -29,7 +31,7 @@ function PrivacyComponent() {
         minHeight: '100vh'
       }}
     >
-
+      {/* Hero Section */}
       <div
         style={{
           padding: '8rem 2rem 4rem',
@@ -42,226 +44,95 @@ function PrivacyComponent() {
           color={primaryColor}
           style={{ margin: '0 auto 1.5rem' }}
         />
-
-        <h1
-          style={{
-            fontSize: 'clamp(2rem,5vw,3rem)',
-            fontWeight: 900,
-            margin: 0
-          }}
-        >
+        <h1 style={{ fontSize: 'clamp(2rem,5vw,3rem)', fontWeight: 900, margin: 0 }}>
           Privacy <span style={{ color: primaryColor }}>Policy</span>
         </h1>
-
-        <p style={{
-          color: textSecondary,
-          marginTop: '1rem',
-          fontWeight: 500
-        }}>
+        <p style={{ color: textSecondary, marginTop: '1rem', fontWeight: 500 }}>
           Last Updated: April 2026
         </p>
       </div>
 
-
-      <div
-        style={{
-          maxWidth: '850px',
-          margin: '0 auto',
-          padding: '4rem 2rem',
-          lineHeight: 1.8
-        }}
-      >
-
+      <div style={{ maxWidth: '850px', margin: '0 auto', padding: '4rem 2rem', lineHeight: 1.8 }}>
+        
+        {/* Section 1: Info Collection */}
         <section style={{ marginBottom: '3rem' }}>
-          <h2
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              fontSize: '1.5rem',
-              color: primaryColor
-            }}
-          >
+          <h2 style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '1.5rem', color: primaryColor }}>
             <Database size={22} />
             1. Information We Collect & Use
           </h2>
-
           <p>
-            We collect personal information you provide such as name,
-            email, phone number and account details to provide and improve
-            our services.
+            We collect personal information such as name, email, phone number, and bank account details (for referral payouts) to provide and improve our services.
           </p>
-
-          <p>
-            We may use your information for:
-          </p>
-
           <ul style={{ paddingLeft: '1.5rem' }}>
             <li>Providing and improving our services</li>
+            <li>Processing course enrollments and referral commissions</li>
             <li>Customer support and communication</li>
-            <li>Analytics and usage trend analysis</li>
-            <li>Marketing and promotional effectiveness</li>
             <li>Service optimization and user experience improvements</li>
           </ul>
-
         </section>
 
+        {/* NEW Section: Referral Program (KYC ke liye zaroori) */}
+        <section style={{ marginBottom: '3rem', padding: '2rem', borderRadius: '16px', border: `1px solid ${primaryColor}30`, background: isDark ? '#ffffff03' : '#00000003' }}>
+          <h2 style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '1.5rem', color: primaryColor }}>
+            <Users size={22} />
+            2. Referral Program & Earnings
+          </h2>
+          <p>
+            Our platform includes a referral system. When you participate, we collect data related to your referred users to calculate commissions accurately.
+          </p>
+          <ul style={{ paddingLeft: '1.5rem' }}>
+            <li>We track referral links and successful conversions.</li>
+            <li>Earnings are disbursed after verifying the validity of the transaction and subject to our refund policy.</li>
+            <li>User data of referred individuals is handled with the same privacy standards.</li>
+          </ul>
+        </section>
 
-
+        {/* Section 3: Sharing */}
         <section style={{ marginBottom: '3rem' }}>
-          <h2
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              fontSize: '1.5rem',
-              color: primaryColor
-            }}
-          >
+          <h2 style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '1.5rem', color: primaryColor }}>
             <Eye size={22} />
-            2. Information Sharing
+            3. Information Sharing
           </h2>
-
-          <p>
-            We may share information only when necessary:
-          </p>
-
-          <ul style={{ paddingLeft: '1.5rem' }}>
-            <li>With service providers supporting our platform</li>
-            <li>With affiliates or business partners for services/promotions</li>
-            <li>During merger, acquisition or business transfer</li>
-            <li>When required by law or legal authorities</li>
-            <li>With your consent for specific purposes</li>
-          </ul>
-
-          <p>
-            We do not sell  your personal information.
-          </p>
-
+          <p>We may share information with payment processors (like Razorpay) to facilitate transactions and payouts. We do not sell your personal information to third parties.</p>
         </section>
 
-
-
-        <section
-          style={{
-            marginBottom: '3rem',
-            padding: '2rem',
-            borderRadius: '16px',
-            border: `1px solid ${primaryColor}30`,
-            background: isDark ? '#ffffff03' : '#00000003'
-          }}
-        >
-
-          <h2
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              fontSize: '1.5rem',
-              color: primaryColor
-            }}
-          >
-            <Lock size={22} />
-            3. Cookies & Tracking Technologies
-          </h2>
-
-          <p>
-            We use cookies, web beacons and similar technologies to:
-          </p>
-
-          <ul style={{ paddingLeft: '1.5rem' }}>
-            <li>Enable essential website functionality</li>
-            <li>Remember preferences and login settings</li>
-            <li>Analyze traffic and improve services</li>
-            <li>Measure performance of content and campaigns</li>
-          </ul>
-
-          <p>
-            Our website may use session cookies and persistent cookies.
-            You may disable cookies through your browser settings.
-          </p>
-
-        </section>
-
-
-
+        {/* Section 4: Cookies */}
         <section style={{ marginBottom: '3rem' }}>
-          <h2
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              fontSize: '1.5rem',
-              color: primaryColor
-            }}
-          >
-            <ShieldCheck size={22} />
-            4. Your Rights & Data Control
-          </h2>
-
-          <p>
-            You may request to access, update or delete your personal data
-            through your account settings or by contacting us.
-          </p>
-
-          <p>
-            Some information may be retained where required by legal or
-            regulatory obligations.
-          </p>
-
-        </section>
-
-
-
-        <section
-          style={{
-            marginBottom: '3rem',
-            padding: '2rem',
-            borderRadius: '16px',
-            border: `1px solid ${primaryColor}30`,
-            background: isDark ? '#ffffff03' : '#00000003'
-          }}
-        >
-
-          <h2
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              fontSize: '1.5rem',
-              color: primaryColor
-            }}
-          >
+          <h2 style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '1.5rem', color: primaryColor }}>
             <Lock size={22} />
-            5. Data Security & Legal Disclosure
+            4. Cookies & Tracking
           </h2>
-
-          <p>
-            We use commercially reasonable security measures to protect
-            your personal data.
-          </p>
-
-          <p>
-            While we strive for strong protection, no internet transmission
-            or storage system is completely secure.
-          </p>
-
-          <p>
-            We may disclose information when necessary to:
-          </p>
-
-          <ul style={{ paddingLeft: '1.5rem' }}>
-            <li>Comply with legal obligations</li>
-            <li>Prevent fraud or misuse</li>
-            <li>Protect users, company rights or public safety</li>
-            <li>Defend against legal claims</li>
-          </ul>
-
+          <p>We use cookies to remember login settings and analyze traffic to improve our learning platform.</p>
         </section>
 
+        {/* Section 5: Security */}
+        <section style={{ marginBottom: '3rem' }}>
+          <h2 style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '1.5rem', color: primaryColor }}>
+            <ShieldCheck size={22} />
+            5. Data Security
+          </h2>
+          <p>We use industry-standard security measures to protect your data. However, no method of transmission over the internet is 100% secure.</p>
+        </section>
+
+        {/* NEW Section: Contact Info (Reviewer ise check karega) */}
+        <section style={{ marginTop: '4rem', padding: '2rem', textAlign: 'center', borderTop: `1px solid ${primaryColor}20` }}>
+          <h2 style={{ fontSize: '1.5rem', color: primaryColor, marginBottom: '1rem' }}>
+            Contact Us
+          </h2>
+          <p style={{ color: textSecondary }}>
+            If you have questions about this Privacy Policy, please contact us:
+          </p>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', fontWeight: 600 }}>
+            <Mail size={18} color={primaryColor} />
+            techdmadvance@gmail.com
+          </div>
+          <p style={{ fontSize: '0.9rem', marginTop: '1rem' }}>
+            DM Advance Tech <br />
+            Gurugram, Haryana, India
+          </p>
+        </section>
 
       </div>
-
       <Footer />
     </div>
   )
