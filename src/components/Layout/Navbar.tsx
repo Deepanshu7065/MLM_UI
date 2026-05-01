@@ -82,7 +82,6 @@ export function Navbar() {
   ];
 
   const isActivityActive = activityLinks.some(l => location.pathname === l.to);
-  // const isAdminActive = adminLinks.some(l => location.pathname.startsWith(l.to));
 
   const handleLogOut = () => {
     localStorage.removeItem("auth");
@@ -115,11 +114,20 @@ export function Navbar() {
         .desktop-links { display: flex; align-items: center; gap: 0.25rem; }
         .mobile-btn-show { display: none !important; }
 
+        /* Desktop: show pill, Mobile: hide pill */
+        .user-id-pill {
+          display: inline-flex;
+        }
+
         @media (max-width: 1024px) {
           .desktop-links { display: none; }
           .desktop-logout { display: none; }
           .mobile-btn-show { display: flex !important; }
           .logo-suffix { display: none; }
+          /* Hide the pill completely on mobile — shown inside drawer instead */
+          .user-id-pill {
+            display: none !important;
+          }
         }
 
         .nav-link {
@@ -251,18 +259,6 @@ export function Navbar() {
           display: flex; align-items: center; justify-content: center;
         }
 
-        .mob-activity-group {
-          background: ${isDark ? "rgba(255,255,255,0.03)" : "#fff"};
-          border: 1px solid ${isDark ? "rgba(255,255,255,0.07)" : "#e2e8f0"};
-          border-radius: 14px; overflow: hidden; margin-bottom: 0;
-        }
-
-        .mob-activity-header {
-          display: flex; align-items: center; justify-content: space-between;
-          padding: 1rem 1.1rem; cursor: pointer;
-          border-bottom: 1px solid ${isDark ? "rgba(255,255,255,0.04)" : "#f1f5f9"};
-        }
-
         .mob-logout-btn {
           margin: 0 1.5rem 1.5rem; padding: 1rem 1.5rem;
           border-radius: 14px; border: none; cursor: pointer;
@@ -299,9 +295,10 @@ export function Navbar() {
           </span>
         </div>
 
+        {/* ── User ID Pill — desktop only, hidden on mobile via CSS ── */}
         <span
+          className="user-id-pill"
           style={{
-            display: "inline-flex",
             alignItems: "center",
             gap: "8px",
             padding: "8px 14px",
@@ -310,28 +307,23 @@ export function Navbar() {
             fontWeight: 700,
             letterSpacing: "0.08em",
             textTransform: "uppercase",
-
             background:
               theme === "dark"
                 ? "rgba(148,163,184,0.12)"
                 : "rgba(15,23,42,0.06)",
-
             color:
               theme === "dark"
                 ? "#e2e8f0"
                 : "#334155",
-
             border:
               theme === "dark"
                 ? "1px solid rgba(148,163,184,.25)"
                 : "1px solid rgba(148,163,184,.35)",
-
             boxShadow:
               theme === "dark"
                 ? "0 2px 10px rgba(0,0,0,.25)"
                 : "0 2px 8px rgba(15,23,42,.06)",
-
-            backdropFilter: "blur(8px)"
+            backdropFilter: "blur(8px)",
           }}
         >
           <span
@@ -340,12 +332,11 @@ export function Navbar() {
               height: 8,
               borderRadius: "50%",
               background: "#22c55e",
-              boxShadow: "0 0 8px rgba(34,197,94,.6)"
+              boxShadow: "0 0 8px rgba(34,197,94,.6)",
+              display: "inline-block",
             }}
           />
-
-          <span style={{ opacity: .75 }}>User ID</span>
-
+          <span style={{ opacity: 0.75 }}>User ID</span>
           <span
             style={{
               fontWeight: 800,
@@ -354,7 +345,7 @@ export function Navbar() {
               background:
                 theme === "dark"
                   ? "rgba(255,255,255,.06)"
-                  : "rgba(255,255,255,.85)"
+                  : "rgba(255,255,255,.85)",
             }}
           >
             {userDetails?.userId}
@@ -475,17 +466,17 @@ export function Navbar() {
               Logout
             </Button>
 
-            {/* Mobile Menu */}
-
-            <Button className="icon-btn mobile-btn-show" onClick={() => setIsMobileMenuOpen(true)}
+            {/* Mobile Menu Button */}
+            <Button
+              className="icon-btn mobile-btn-show"
+              onClick={() => setIsMobileMenuOpen(true)}
               style={{
                 border: "none",
-                // hume chahiye mobile m hi dikhe desktop pr display none rahe
-                display: isMobileMenuOpen ? "none" : "block"
-              }}>
+                display: isMobileMenuOpen ? "none" : undefined,
+              }}
+            >
               <Menu size={24} color={text} />
             </Button>
-
           </div>
         </div>
       </div>
@@ -495,21 +486,54 @@ export function Navbar() {
         <div className="mob-overlay">
           {/* Header */}
           <div className="mob-header">
+            {/* User info left */}
             <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-              <div style={{ width: 38, height: 38, borderRadius: "10px", background: `${primary}20`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div style={{
+                width: 38, height: 38, borderRadius: "10px",
+                background: `${primary}20`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
                 <User size={18} color={primary} />
               </div>
               <div>
                 <div className="logo-font" style={{ fontWeight: 800, fontSize: "0.95rem", color: text }}>
                   {userDetails?.name || "My Account"}
                 </div>
-                <div style={{ fontSize: "0.7rem", opacity: 0.45, marginTop: "1px" }}>
-                  {userDetails?.role || "member"}
+                {/* User ID shown here on mobile */}
+                <div style={{
+                  display: "flex", alignItems: "center", gap: "5px",
+                  fontSize: "0.7rem", marginTop: "2px",
+                }}>
+                  <span style={{ opacity: 0.45 }}>{userDetails?.role || "member"}</span>
+                  <span style={{ opacity: 0.25 }}>•</span>
+                  <span style={{
+                    display: "inline-flex", alignItems: "center", gap: "4px",
+                    background: isDark ? "rgba(34,197,94,0.12)" : "rgba(34,197,94,0.1)",
+                    color: "#16a34a",
+                    border: "1px solid rgba(34,197,94,0.25)",
+                    borderRadius: "999px",
+                    padding: "1px 7px",
+                    fontWeight: 700,
+                    fontSize: "0.68rem",
+                    letterSpacing: "0.04em",
+                  }}>
+                    <span style={{
+                      width: 6, height: 6, borderRadius: "50%",
+                      background: "#22c55e",
+                      boxShadow: "0 0 6px rgba(34,197,94,.6)",
+                      display: "inline-block",
+                    }} />
+                    ID: {userDetails?.userId}
+                  </span>
                 </div>
               </div>
             </div>
-            <Button style={{ background: "none", border: "none", cursor: "pointer", padding: "4px" }}
-              onClick={() => setIsMobileMenuOpen(false)}>
+
+            {/* Close button */}
+            <Button
+              style={{ background: "none", border: "none", cursor: "pointer", padding: "4px" }}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
               <X size={28} color={text} />
             </Button>
           </div>

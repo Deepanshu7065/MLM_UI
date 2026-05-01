@@ -71,7 +71,6 @@ function StatCard({ title, value, icon: Icon, accent, sub, isDark }: any) {
 
 export const UserDashboard = () => {
   const { data, isLoading } = useGetWallet();
-  console.log(data)
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);

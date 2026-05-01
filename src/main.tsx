@@ -6,7 +6,7 @@ import { routeTree } from './routeTree.gen'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from './theme/ThemeProvider'
 import { SocketProvider } from './context/SocketProvider'
-import { Toaster } from 'sonner'
+import { toast, Toaster } from 'sonner'
 
 
 
@@ -19,7 +19,24 @@ declare module '@tanstack/react-router' {
 }
 
 // Render the app
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false, 
+        },
+        mutations: {
+            onError: (error: any) => {
+                if (error.response?.status === 403) {
+                    localStorage.clear();
+                    toast.error("Session expired!");
+                    window.location.href = "/home";
+                }
+            }
+        }
+    }
+});
+
+
 const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
     const root = ReactDOM.createRoot(rootElement)

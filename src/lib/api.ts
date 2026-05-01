@@ -1,5 +1,6 @@
 
 import axios from "axios";
+import { toast } from "sonner";
 
 
 export const api = axios.create({
@@ -12,7 +13,6 @@ api.interceptors.request.use(
     const token = localStorage.getItem("token");
 
     if (token) {
-      // ✅ SAFE WAY (important)
       config.headers = config.headers || {};
       config.headers["Authorization"] = `Bearer ${token}`;
     }
@@ -25,6 +25,13 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    if (error.response && error.response.status === 403) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("auth");
+      toast.error("Session expired! Please login again.");
+      window.location.href = "/";
+    }
+
     console.error("API Error:", error?.response?.data || error.message);
     return Promise.reject(error);
   }

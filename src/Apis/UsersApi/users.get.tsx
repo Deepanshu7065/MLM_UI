@@ -14,11 +14,18 @@ export const UsersApi = {
         return response
     },
     getSingleUser: async ({ userId }: { userId: string }) => {
-        const response = await api.get(`${baseUrl}/user/${userId}`)
+        const response = await api.get(`${baseUrl}/user/${userId}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+            }
+        )
         return response.data
     },
     createUser: async ({ data }: { data: any }) => {
-        console.log("data", data)
         const response = await api.post(`${baseUrl}/create-user`, data)
         return response.data
     },
