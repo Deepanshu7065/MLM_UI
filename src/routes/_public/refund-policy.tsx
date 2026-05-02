@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useTheme } from "@/theme/ThemeProvider"
 import { getThemeColor } from "@/theme/themeConfig"
-import { RotateCcw, CheckCircle, CreditCard, HelpCircle, Clock, AlertTriangle } from 'lucide-react'
+import { RotateCcw,  CreditCard, HelpCircle, Clock, AlertTriangle } from 'lucide-react'
 import { Footer } from '@/hooks/footer'
 
 export const Route = createFileRoute('/_public/refund-policy')({
