@@ -20,10 +20,16 @@ export const useGetPayment = () => {
 
 export const useCheckoutMutation = () => {
     return useMutation({
-        mutationFn: (data: PaymentType) => PaymentApi.initiateCheckout(data)
+      mutationFn: (data: PaymentType): Promise<{
+        success: boolean;
+        payment_session_id: string;
+        order_id: string;
+        payment_db_id: string;
+      }> => PaymentApi.initiateCheckout(data),
     });
-};
+  };
 
+  
 export const useVerifyPaymentMutation = () => {
     const queryClient = useQueryClient();
     return useMutation({
