@@ -26,10 +26,11 @@ export const EarningApi = {
     },
 
     // Admin: all commissions + profit summary
-    getAllCommissions: async () => {
-        const res = await api.get(`${baseUrl}/admin/all-commissions`, {
-            headers: authHeaders(),
-        });
+    getAllCommissions: async (paymentPage = 1, summaryPage = 1) => {
+        const res = await api.get(
+            `${baseUrl}/admin/all-commissions?paymentPage=${paymentPage}&summaryPage=${summaryPage}`,
+            { headers: authHeaders() }
+        );
         return res.data;
     },
 

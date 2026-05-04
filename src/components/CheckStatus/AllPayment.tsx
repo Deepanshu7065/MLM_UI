@@ -76,9 +76,9 @@ const AllPayments = () => {
                             </div>
 
                             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", fontSize: "0.95rem" }}>
-                                <Detail label="Name" value={p.name} isDark={isDark} />
-                                <Detail label="Email" value={p.email} isDark={isDark} />
-                                <Detail label="Phone" value={p.phone} isDark={isDark} />
+                                <Detail label="Name" value={p.user.name} isDark={isDark} />
+                                <Detail label="Email" value={p.user.email} isDark={isDark} />
+                                <Detail label="Phone" value={p.user.phone} isDark={isDark} />
                                 <Detail label="Payment ID" value={p.payment_id} isDark={isDark} />
                                 <Detail label="Order ID" value={p.order_id || "Not Generated"} isDark={isDark} />
                                 <Detail label="Date" value={new Date(p.created_at).toLocaleString()} isDark={isDark} />

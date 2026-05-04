@@ -20,10 +20,10 @@ export const useGetAllWallets = () => {
     });
 };
 
-export const useGetAllCommissions = () => {
+export const useGetAllCommissions = (paymentPage = 1, summaryPage = 1) => {
     return useQuery({
-        queryFn: () => EarningApi.getAllCommissions(),
-        queryKey: ["admin-commissions"],
+        queryFn: () => EarningApi.getAllCommissions(paymentPage, summaryPage),
+        queryKey: ["admin-commissions", paymentPage, summaryPage],
         staleTime: 30000,
     });
 };
