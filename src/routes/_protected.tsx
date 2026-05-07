@@ -6,6 +6,7 @@ import { setUser } from '@/store/user.store'
 import { courseActions } from '@/components/Courses/addCourseStore'
 import { useGetCart } from '@/hooks/cart.mutate'
 import { useTheme } from '@/theme/ThemeProvider'
+import logoimg from '../../public/assets/logo.jpeg'
 
 export const Route = createFileRoute('/_protected')({
   beforeLoad: () => {
@@ -57,7 +58,7 @@ function ProtectedLayout() {
       >
         {/* Loader Image */}
         <img
-          src="/public/assets/logo.jpeg"
+          src={`${logoimg}`}
           alt="Loading..."
           style={{
             width: '250px',
