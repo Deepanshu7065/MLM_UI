@@ -13,7 +13,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMemo, useState } from "react";
 
-// ─── Types ───────────────────────────────────────────────────────────────────
 interface UserRef {
     name: string;
     email: string;
@@ -60,7 +59,6 @@ interface UserPaymentSummary {
     pendingCount: number;
 }
 
-// ✅ Backend se aane wala actual shape
 interface PaginationMeta {
     total: number;
     page: number;
@@ -79,11 +77,10 @@ interface CommissionData {
     payments: PaymentRecord[];
     userSummary: UserPaymentSummary[];
     wallets: WalletEntry[];
-    paymentMeta: PaginationMeta;   // ✅ All Transactions ke liye
-    summaryMeta: PaginationMeta;   // ✅ User Summary ke liye
+    paymentMeta: PaginationMeta;
+    summaryMeta: PaginationMeta;
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
 const fmt = (n: number) =>
     new Intl.NumberFormat("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
 
@@ -92,7 +89,6 @@ const fmtDate = (d: string) =>
 
 const avatar = (name?: string) => name ? name.slice(0, 2).toUpperCase() : "??";
 
-// ─── Pagination Component ─────────────────────────────────────────────────────
 function PaginationBar({
     meta,
     onPageChange,
@@ -206,7 +202,6 @@ function SectionHeader({ title, sub }: { title: string; sub?: string }) {
     );
 }
 
-// ─── Main Dashboard ──────────────────────────────────────────────────────────
 const AdminDashboard = () => {
     const { theme } = useTheme();
     const isDark = theme === "dark";
@@ -225,8 +220,8 @@ const AdminDashboard = () => {
     const wallets: WalletEntry[] = data?.wallets ?? [];
     const allPayments: PaymentRecord[] = data?.payments ?? [];
     const userSummary: UserPaymentSummary[] = data?.userSummary ?? [];
-    const paymentMeta = data?.paymentMeta;   // ✅ All Transactions pagination
-    const summaryMeta = data?.summaryMeta;   // ✅ User Summary pagination
+    const paymentMeta = data?.paymentMeta;
+    const summaryMeta = data?.summaryMeta;
 
     const commissions: Commission[] = useMemo(() => {
         const list = data?.commissions ?? [];
@@ -234,7 +229,6 @@ const AdminDashboard = () => {
         return list.filter(c => c.level === (commFilter === "level1" ? 1 : 2));
     }, [data, commFilter]);
 
-    // ✅ txFilter sirf frontend filter hai — backend se 15 records aate hain status ke baad
     const filteredPayments: PaymentRecord[] = useMemo(() => {
         if (txFilter === "ALL") return allPayments;
         return allPayments.filter(p => p.status === txFilter);

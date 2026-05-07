@@ -19,10 +19,17 @@ export const Route = createFileRoute('/_protected')({
 
 function ProtectedLayout() {
   const { theme } = useTheme();
+
   const rawUserId = localStorage.getItem('auth')
   const userId = rawUserId ? JSON.parse(rawUserId) : null
-  const { data: userData, isPending } = GetSingleUser({ userId: userId?.userId })
-  const { data: cartData } = useGetCart({ userId: userId?.userId })
+
+  const { data: userData, isPending } = GetSingleUser({
+    userId: userId?.userId
+  })
+
+  const { data: cartData } = useGetCart({
+    userId: userId?.userId
+  })
 
   useEffect(() => {
     if (cartData) {
@@ -36,53 +43,55 @@ function ProtectedLayout() {
     }
   }, [isPending, userData])
 
-  const containerStyle = {
-    display: 'flex',
-    minHeight: '100vh',
-    backgroundColor: theme === 'dark' ? '#0f172a' : '#f8fafc',
-    transition: 'background-color 0.3s ease',
-  };
-
-  const contentWrapperStyle = {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    flex: 1,
-  };
-
-  const mainStyle = {
-    flex: 1,
-    padding: 0,
-    backgroundColor: theme === 'dark' ? '#0f172a' : '#f8fafc',
-    transition: 'background-color 0.3s ease',
-  };
-
-  const loadingStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: '100vh',
-    backgroundColor: theme === 'dark' ? '#0f172a' : '#ffffff',
-  };
-
-  const loadingTextStyle = {
-    color: theme === 'dark' ? '#f1f5f9' : '#0f172a',
-    fontSize: '1.125rem',
-    fontWeight: '500',
-  };
-
   if (isPending || !userData) {
     return (
-      <div style={loadingStyle}>
-        <div style={loadingTextStyle}>Loading...</div>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+          background: theme === 'dark' ? '#0f172a' : '#fff',
+          gap: '20px',
+        }}
+      >
+        {/* Loader Image */}
+        <img
+          src="/public/assets/logo.jpeg"
+          alt="Loading..."
+          style={{
+            width: '250px',
+            height: '260px',
+            objectFit: 'contain',
+          }}
+        />
       </div>
     )
   }
 
   return (
-    <div style={containerStyle}>
-      <div style={contentWrapperStyle}>
+    <div
+      style={{
+        display: 'flex',
+        minHeight: '100vh',
+        backgroundColor: theme === 'dark' ? '#0f172a' : '#f8fafc',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          flex: 1,
+        }}
+      >
         <Navbar />
-        <main style={mainStyle}>
+
+        <main
+          style={{
+            flex: 1,
+            backgroundColor: theme === 'dark' ? '#0f172a' : '#f8fafc',
+          }}
+        >
           <Outlet />
         </main>
       </div>
