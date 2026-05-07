@@ -6,7 +6,7 @@ import { setUser } from '@/store/user.store'
 import { courseActions } from '@/components/Courses/addCourseStore'
 import { useGetCart } from '@/hooks/cart.mutate'
 import { useTheme } from '@/theme/ThemeProvider'
-import logoimg from '../../public/assets/logo.jpeg'
+import logoimg from '../../public/assets/logo.png'
 
 export const Route = createFileRoute('/_protected')({
   beforeLoad: () => {
