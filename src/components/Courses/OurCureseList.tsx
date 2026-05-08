@@ -25,6 +25,7 @@ const OurCureseList = () => {
     queryFn: () => CourseApi.getCourses(),
   })
 
+
   if (isLoading) {
     return (
       <div style={{ padding: "3rem 0" }}>
@@ -45,6 +46,10 @@ const OurCureseList = () => {
           .skeleton-body { padding: 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
           .skeleton-line { height: 12px; border-radius: 6px; background: ${isDark ? "#334155" : "#e2e8f0"}; }
           @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+          @keyframes shimmer {
+           0% { background-position: -200% 0; }
+           100% { background-position: 200% 0; }
+          }
         `}</style>
         <div className="skeleton-grid">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -100,10 +105,12 @@ const OurCureseList = () => {
 
         /* Image */
         .cc-img-wrap {
-          position: relative; width: 100%;
-          /* Mobile: 16:10 aspect; taller on desktop */
-          padding-top: 60%;
-          overflow: hidden; flex-shrink: 0;
+          position: relative;
+          width: 100%;
+          padding-top: 56.25%; /* 16:9 ratio */
+          background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+          background-size: 200% 100%;
+          animation: shimmer 1.5s infinite;
         }
         @media (min-width: 600px) { .cc-img-wrap { padding-top: 56%; } }
 
@@ -187,44 +194,50 @@ const OurCureseList = () => {
       `}</style>
 
       <div className="course-grid">
-        {data?.courses?.map((item: any, i: number) => (
-          <div key={i} className="cc" onClick={() => navigate({ to: `/courses/${item.id}` })}>
+        {data?.courses?.map((item: any, i: number) => {
+          const optimizedImage = item.image.replace('/upload/', '/upload/w_600,f_auto,q_auto/');
+          return (
 
-            {/* Image */}
-            <div className="cc-img-wrap">
-              <img
-                className="cc-img"
-                src={item.image}
-                alt={item.course_name}
-              />
-              <div className="cc-img-overlay" />
-              <span className="cc-premium">Premium</span>
-              <span className="cc-price">₹{item.price}</span>
-            </div>
 
-            {/* Body */}
-            <div className="cc-body">
-              <h3 className="cc-title">{item.course_name}</h3>
-              <p className="cc-desc">{item.description}</p>
+            <div key={i} className="cc" onClick={() => navigate({ to: `/courses/${item.id}` })}>
 
-              <div className="cc-meta">
-                <span className="cc-meta-chip">
-                  <Clock size={11} /> {item.duration}w
-                </span>
-                <span className="cc-meta-chip">
-                  <BookOpen size={11} /> {item.lessons || "0"} lessons
-                </span>
+              {/* Image */}
+              <div className="cc-img-wrap">
+                <img
+                  className="cc-img"
+                  src={optimizedImage}
+                  alt={item.course_name}
+                  loading="lazy"
+                />
+                <div className="cc-img-overlay" />
+                <span className="cc-premium">Premium</span>
+                <span className="cc-price">₹{item.price}</span>
               </div>
 
-              <button
-                className="cc-btn"
-                onClick={(e) => { e.stopPropagation(); alert("First you need to login"); }}
-              >
-                <Lock size={13} /> Enroll Now <ArrowRight size={13} />
-              </button>
+              {/* Body */}
+              <div className="cc-body">
+                <h3 className="cc-title">{item.course_name}</h3>
+                <p className="cc-desc">{item.description}</p>
+
+                <div className="cc-meta">
+                  <span className="cc-meta-chip">
+                    <Clock size={11} /> {item.duration}w
+                  </span>
+                  <span className="cc-meta-chip">
+                    <BookOpen size={11} /> {item.lessons || "0"} lessons
+                  </span>
+                </div>
+
+                <button
+                  className="cc-btn"
+                  onClick={(e) => { e.stopPropagation(); alert("First you need to login"); }}
+                >
+                  <Lock size={13} /> Enroll Now <ArrowRight size={13} />
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </>
   )

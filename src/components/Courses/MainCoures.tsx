@@ -114,11 +114,18 @@ function MainCourses() {
                             }}
                         >
                             {/* Image Container */}
-                            <div style={{ position: 'relative', overflow: 'hidden' }}>
+                            <div style={{
+                                position: 'relative',
+                                overflow: 'hidden',
+                                aspectRatio: '16/9',
+                                backgroundColor: isDark ? '#222' : '#eee'
+                            }}>
                                 <img
                                     className="course-card-img"
                                     src={item.image}
                                     alt={item.course_name}
+                                    loading="lazy"
+                                    decoding="async"
                                 />
                                 <div style={{
                                     position: 'absolute', bottom: '10px', right: '10px',

@@ -36,6 +36,7 @@ const PayoutPage = () => {
   const [loading, setLoading] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"card" | "upi">("card");
+  const [orderData, setOrderData] = useState<any>(null);
 
   const [userDetails, setUserDetails] = useState({
     firstName: "",
@@ -48,6 +49,10 @@ const PayoutPage = () => {
     () => cart.reduce((sum, item) => sum + Number(item.course.price || 0), 0),
     [cart]
   );
+  const GST_RATE = 0.18;
+  const gstAmount = useMemo(() => Math.round(totalAmount * GST_RATE), [totalAmount]);
+  const totalWithGST = useMemo(() => totalAmount + gstAmount, [totalAmount, gstAmount]);
+
 
   const rawAuth =
     typeof window !== "undefined" ? localStorage.getItem("auth") : null;
@@ -88,7 +93,7 @@ const PayoutPage = () => {
         throw new Error("Cashfree session creation failed");
       }
 
-      // Step 2: ✅ npm package se SDK load karo (window.Cashfree nahi)
+      // // Step 2: ✅ npm package se SDK load karo (window.Cashfree nahi)
       const cashfree = await load({
         mode: (import.meta.env.VITE_CASHFREE_MODE?.toLowerCase() ||
           "sandbox") as "sandbox" | "production",
@@ -124,6 +129,11 @@ const PayoutPage = () => {
           });
 
           if (verifyRes.success) {
+            setOrderData({
+              subtotal: totalAmount,      // ✅ GST ke bina
+              gstAmount: gstAmount,       // ✅ sirf GST
+              totalAmount: totalWithGST,  // ✅ GST ke saath final amount
+            });
             setStep(3);
           } else {
             alert("Payment verification failed. Please contact support.");
@@ -140,93 +150,94 @@ const PayoutPage = () => {
       alert("Payment shuru nahi ho paya. Console check karein.");
       setLoading(false);
     }
-  };
 
-  return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: isDark ? c.background.dark : c.background.light,
-        padding: "4rem 2rem",
-      }}
-    >
-      <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-        <StepProgress
-          step={step === 3 ? 3 : isProcessing ? 2 : step}
-          isDark={isDark}
-          c={c}
-        />
 
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            backgroundColor: isDark ? c.card.dark : c.card.light,
-            borderRadius: "2.5rem",
-            overflow: "hidden",
-            border: `1px solid ${
-              isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"
-            }`,
-          }}
-        >
-          <div
-            style={{ flex: "1.4", padding: "3.5rem", minWidth: "350px" }}
-          >
-            {isProcessing ? (
-              <ProcessingState isDark={isDark} c={c} />
-            ) : step === 3 ? (
-              <SuccessState navigate={navigate} isDark={isDark} c={c} />
-            ) : (
-              <>
-                {step === 1 && (
-                  <BillingForm
-                    inputStyle={inputStyle(isDark)}
-                    labelStyle={labelStyle(isDark, c)}
-                    userDetails={userDetails}
-                    setUserDetails={setUserDetails}
-                    isDark={isDark}
-                  />
-                )}
-                {step === 2 && (
-                  <PaymentSection
-                    inputStyle={inputStyle(isDark)}
-                    paymentMethod={paymentMethod}
-                    setPaymentMethod={setPaymentMethod}
-                    totalAmount={totalAmount}
-                    isDark={isDark}
-                    c={c}
-                  />
-                )}
-                <FooterButtons
-                  c={c}
-                  step={step}
-                  setStep={setStep}
-                  handleNext={handleNext}
-                  loading={loading}
-                  totalAmount={totalAmount}
-                  isDark={isDark}
-                />
-              </>
-            )}
-          </div>
-          <OrderSummary
-            cart={cart}
-            totalAmount={totalAmount}
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          backgroundColor: isDark ? c.background.dark : c.background.light,
+          padding: "4rem 2rem",
+        }}
+      >
+        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+          <StepProgress
+            step={step === 3 ? 3 : isProcessing ? 2 : step}
             isDark={isDark}
             c={c}
           />
+
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              backgroundColor: isDark ? c.card.dark : c.card.light,
+              borderRadius: "2.5rem",
+              overflow: "hidden",
+              border: `1px solid ${isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"
+                }`,
+            }}
+          >
+            <div
+              style={{ flex: "1.4", padding: "3.5rem", minWidth: "350px" }}
+            >
+              {isProcessing ? (
+                <ProcessingState isDark={isDark} c={c} />
+              ) : step === 3 ? (
+                <SuccessState navigate={navigate} isDark={isDark} c={c} orderData={orderData} />
+              ) : (
+                <>
+                  {step === 1 && (
+                    <BillingForm
+                      inputStyle={inputStyle(isDark)}
+                      labelStyle={labelStyle(isDark, c)}
+                      userDetails={userDetails}
+                      setUserDetails={setUserDetails}
+                      isDark={isDark}
+                    />
+                  )}
+                  {step === 2 && (
+                    <PaymentSection
+                      inputStyle={inputStyle(isDark)}
+                      paymentMethod={paymentMethod}
+                      setPaymentMethod={setPaymentMethod}
+                      totalAmount={totalWithGST}
+                      isDark={isDark}
+                      c={c}
+                    />
+                  )}
+                  <FooterButtons
+                    c={c}
+                    step={step}
+                    setStep={setStep}
+                    handleNext={handleNext}
+                    loading={loading}
+                    totalAmount={totalWithGST}
+                    isDark={isDark}
+                  />
+                </>
+              )}
+            </div>
+            <OrderSummary
+              cart={cart}
+              subtotal={totalAmount}
+              gstAmount={gstAmount}
+              totalAmount={totalWithGST}
+              isDark={isDark}
+              c={c}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
+}
 
 const inputStyle = (isDark: boolean) => ({
   width: "100%",
   backgroundColor: isDark ? "#050811" : "#f8fafc",
-  border: `1px solid ${
-    isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"
-  }`,
+  border: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"
+    }`,
   padding: "0.8rem 1rem",
   borderRadius: "0.75rem",
   color: isDark ? "#fff" : "#000",
@@ -242,4 +253,7 @@ const labelStyle = (isDark: boolean, c: any) => ({
   letterSpacing: "1px",
 });
 
+
+
 export default PayoutPage;
+

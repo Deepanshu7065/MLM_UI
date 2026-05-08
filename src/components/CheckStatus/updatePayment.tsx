@@ -21,7 +21,6 @@ export const UpdatePayment = () => {
         id: State.viewOpen.id,
         data: State.viewOpen.paymentDetails,
     }))
-    console.log("data", data)
 
     const { mutateAsync } = useUpdatePaymentStatus();
 

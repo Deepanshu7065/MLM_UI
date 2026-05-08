@@ -5,9 +5,12 @@ import { themeColors } from '@/theme/themeConfig';
 import {
     CreditCard,
     ChevronRight, ReceiptText,
-    Timer, LayoutGrid, BookOpen
+    BookOpen, AlertCircle
 } from 'lucide-react';
-// import { imageUrl } from '@/hooks/utils';
+import CourseProgress from './CourseProgress';
+
+
+
 
 const UserOrder = () => {
     const { theme } = useTheme();
@@ -15,7 +18,6 @@ const UserOrder = () => {
     const c = themeColors;
 
     const [expandedCourseId, setExpandedCourseId] = useState<number | null>(null);
-
     const { data, isLoading } = useGetUserOrder();
 
     const toggleExpand = (id: number) => {
@@ -30,21 +32,12 @@ const UserOrder = () => {
         transition: 'background-color 0.3s ease',
     };
 
-    const orderCardStyle: React.CSSProperties = {
-        backgroundColor: isDark ? c.card.dark : c.card.light,
-        border: `1px solid ${isDark ? c.border.dark : c.border.light}`,
-        borderRadius: '1.25rem',
-        padding: '1.5rem',
-        marginBottom: '1.5rem',
-        boxShadow: isDark ? '0 10px 15px -3px rgba(0, 0, 0, 0.4)' : '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
-    };
-
     if (isLoading) {
         return (
             <div style={containerStyle}>
                 <div style={{ textAlign: 'center', marginTop: '10rem' }}>
-                    <div className="animate-pulse" style={{ fontSize: '1.2rem', fontWeight: '600', opacity: 0.7 }}>
-                        ✨ Fetching your learning journey...
+                    <div style={{ fontSize: '1.2rem', fontWeight: '600', opacity: 0.7 }}>
+                        ✨ Preparing your dashboard...
                     </div>
                 </div>
             </div>
@@ -64,138 +57,158 @@ const UserOrder = () => {
                     </p>
                 </header>
 
-                {data?.orders?.map((order: any) => (
-                    <div key={order.orderId} style={orderCardStyle}>
-                        {/* Order Meta Info (Pehle jaisa top bar) */}
-                        <div style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            flexWrap: 'wrap',
-                            gap: '1rem',
-                            borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`,
-                            paddingBottom: '1.25rem',
-                            marginBottom: '1.25rem'
+                {data?.orders?.map((order: any) => {
+                    const orderStatus = order.status.toLowerCase();
+                    const isSuccess = orderStatus === 'success' || orderStatus === 'completed';
+
+                    return (
+                        <div key={order.orderId} style={{
+                            backgroundColor: isDark ? c.card.dark : c.card.light,
+                            border: `1px solid ${isDark ? c.border.dark : c.border.light}`,
+                            borderRadius: '1.5rem',
+                            padding: '1.5rem',
+                            marginBottom: '1.5rem',
+                            boxShadow: isDark ? '0 15px 25px -5px rgba(0, 0, 0, 0.4)' : '0 4px 12px rgba(0, 0, 0, 0.05)',
                         }}>
-                            <div style={{ display: 'flex', gap: '2rem' }}>
-                                <div>
-                                    <div style={{ fontSize: '0.65rem', fontWeight: '800', color: isDark ? c.textMuted.dark : c.textMuted.light, marginBottom: '0.25rem', textTransform: 'uppercase' }}>Order ID</div>
-                                    <div style={{ fontWeight: '800', fontFamily: 'monospace', fontSize: '1rem' }}>#{order.orderId}</div>
-                                </div>
-                                <div>
-                                    <div style={{ fontSize: '0.65rem', fontWeight: '800', color: isDark ? c.textMuted.dark : c.textMuted.light, marginBottom: '0.25rem', textTransform: 'uppercase' }}>Date</div>
-                                    <div style={{ fontWeight: '700', fontSize: '0.95rem' }}>{new Date(order.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</div>
-                                </div>
-                                <div>
-                                    <div style={{ fontSize: '0.65rem', fontWeight: '800', color: isDark ? c.textMuted.dark : c.textMuted.light, marginBottom: '0.25rem', textTransform: 'uppercase' }}>Total</div>
-                                    <div style={{ fontWeight: '900', color: isDark ? c.primary.dark : c.primary.light, fontSize: '1rem' }}>₹{order.totalAmount.toLocaleString()}</div>
-                                </div>
-                            </div>
+                            {/* Order Header */}
                             <div style={{
-                                padding: '0.5rem 1rem', borderRadius: '2rem', fontSize: '0.7rem', fontWeight: '800',
-                                backgroundColor: 'rgba(16, 185, 129, 0.1)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.2)'
+                                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                                borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`,
+                                paddingBottom: '1.25rem', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '1rem'
                             }}>
-                                {order.status.toUpperCase()}
-                            </div>
-                        </div>
-
-                        {/* Courses Section */}
-                        <div style={{ display: 'grid', gap: '0.75rem' }}>
-                            {order.ordered_courses?.map((course: any) => {
-                                const isExpanded = expandedCourseId === course.id;
-                                return (
-                                    <div key={course.id} style={{
-                                        borderRadius: '1rem',
-                                        backgroundColor: isDark ? c.backgroundSecondary.dark : c.backgroundSecondary.light,
-                                        border: `1px solid ${isExpanded ? (isDark ? c.primary.dark : c.primary.light) : (isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)')}`,
-                                        transition: 'all 0.3s ease',
-                                        overflow: 'hidden'
-                                    }}>
-                                        {/* Course Row (Pehle jaisa design) */}
-                                        <div
-                                            onClick={() => toggleExpand(course.id)}
-                                            style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', cursor: 'pointer' }}
-                                        >
-                                            <img
-                                                src={`${course.image}`}
-                                                alt={course.course_name}
-                                                style={{ width: '56px', height: '56px', borderRadius: '0.75rem', objectFit: 'cover' }}
-                                            />
-                                            <div style={{ flex: 1 }}>
-                                                <div style={{ fontWeight: '700', fontSize: '1rem' }}>{course.course_name}</div>
-                                                <div style={{ fontSize: '0.85rem', fontWeight: '600', opacity: 0.7 }}>₹{course.price.toLocaleString()}</div>
-                                            </div>
-                                            <div style={{
-                                                transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
-                                                transition: '0.3s ease',
-                                                opacity: 0.5
-                                            }}>
-                                                <ChevronRight size={20} />
-                                            </div>
-                                        </div>
-
-                                        {/* DETAILS SECTION (Expanded Content) */}
-                                        <div style={{
-                                            maxHeight: isExpanded ? '400px' : '0px',
-                                            opacity: isExpanded ? 1 : 0,
-                                            overflow: 'hidden',
-                                            transition: 'all 0.3s ease-in-out',
-                                            padding: isExpanded ? '0 1rem 1.25rem 1rem' : '0 1rem'
-                                        }}>
-                                            <div style={{
-                                                paddingTop: '1rem',
-                                                borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`,
-                                                display: 'grid',
-                                                gap: '1rem'
-                                            }}>
-                                                {/* Description */}
-                                                <div>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.65rem', fontWeight: '800', opacity: 0.5, marginBottom: '0.4rem' }}>
-                                                        <BookOpen size={12} /> COURSE DESCRIPTION
-                                                    </div>
-                                                    <div style={{ fontSize: '0.85rem', lineHeight: '1.5', opacity: 0.8 }}>
-                                                        {course.description || "Learn this course at your own pace with expert guidance."}
-                                                    </div>
-                                                </div>
-
-                                                {/* Grid Info */}
-                                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                                                    <div style={{ backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.02)', padding: '0.75rem', borderRadius: '0.75rem' }}>
-                                                        <div style={{ fontSize: '0.6rem', fontWeight: '800', opacity: 0.5, marginBottom: '0.2rem' }}>DURATION</div>
-                                                        <div style={{ fontSize: '0.85rem', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                                                            <Timer size={14} /> {course.duration} Month(s)
-                                                        </div>
-                                                    </div>
-                                                    <div style={{ backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.02)', padding: '0.75rem', borderRadius: '0.75rem' }}>
-                                                        <div style={{ fontSize: '0.6rem', fontWeight: '800', opacity: 0.5, marginBottom: '0.2rem' }}>CATEGORY</div>
-                                                        <div style={{ fontSize: '0.85rem', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                                                            <LayoutGrid size={14} /> ID: {course.category_id}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div style={{ display: 'flex', gap: '2rem' }}>
+                                    <div>
+                                        <div style={{ fontSize: '0.65rem', fontWeight: '800', opacity: 0.5, textTransform: 'uppercase' }}>Order ID</div>
+                                        <div style={{ fontWeight: '800', fontFamily: 'monospace' }}>#{order.orderId}</div>
                                     </div>
-                                );
-                            })}
-                        </div>
+                                    <div>
+                                        <div style={{ fontSize: '0.65rem', fontWeight: '800', opacity: 0.5, textTransform: 'uppercase' }}>Total</div>
+                                        <div style={{ fontWeight: '900', color: isDark ? c.primary.dark : c.primary.light }}>₹{order.totalAmount.toLocaleString()}</div>
+                                    </div>
+                                </div>
+                                <div style={{
+                                    padding: '0.4rem 0.9rem', borderRadius: '2rem', fontSize: '0.7rem', fontWeight: '900',
+                                    backgroundColor: isSuccess ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                                    color: isSuccess ? '#10b981' : '#ef4444',
+                                    border: `1px solid ${isSuccess ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)'}`
+                                }}>
+                                    {order.status.toUpperCase()}
+                                </div>
+                            </div>
 
-                        <div style={{
-                            marginTop: '1.5rem', padding: '1rem', borderRadius: '1rem',
-                            backgroundColor: isDark ? 'rgba(255,255,255,0.02)' : '#f8fafc',
-                            border: `1px dashed ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-                            display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-                        }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.85rem' }}>
-                                <CreditCard size={18} opacity={0.6} />
-                                <span>Paid via <b>{order.payment?.payment_method?.toUpperCase()}</b></span>
+                            {/* Courses List */}
+                            <div style={{ display: 'grid', gap: '0.75rem' }}>
+                                {order.ordered_courses?.map((course: any) => {
+                                    const isExpanded = expandedCourseId === course.id;
+                                    return (
+                                        <div key={course.id} style={{
+                                            borderRadius: '1.25rem',
+                                            backgroundColor: isDark ? c.backgroundSecondary.dark : c.backgroundSecondary.light,
+                                            border: `1px solid ${isExpanded ? (isDark ? c.primary.dark : c.primary.light) : 'transparent'}`,
+                                            transition: 'all 0.3s ease',
+                                            overflow: 'hidden'
+                                        }}>
+                                            <div
+                                                onClick={() => toggleExpand(course.id)}
+                                                style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.25rem', cursor: 'pointer' }}
+                                            >
+                                                <img
+                                                    src={`${course.image}`}
+                                                    alt={course.course_name}
+                                                    style={{ width: '60px', height: '60px', borderRadius: '0.75rem', objectFit: 'cover' }}
+                                                />
+                                                <div style={{ flex: 1 }}>
+                                                    <div style={{ fontWeight: '800', fontSize: '1.05rem' }}>{course.course_name}</div>
+                                                    <div style={{ fontSize: '0.9rem', fontWeight: '600', opacity: 0.6 }}>₹{course.price.toLocaleString()}</div>
+                                                </div>
+                                                <div style={{ transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)', transition: '0.3s ease', opacity: 0.4 }}>
+                                                    <ChevronRight size={22} />
+                                                </div>
+                                            </div>
+
+                                            {/* Expanded Content Section */}
+                                            <div style={{
+                                                maxHeight: isExpanded ? '800px' : '0px',
+                                                opacity: isExpanded ? 1 : 0,
+                                                overflow: 'hidden',
+                                                transition: 'all 0.4s ease-in-out',
+                                                padding: isExpanded ? '0 1.25rem 1.5rem 1.25rem' : '0 1.25rem'
+                                            }}>
+                                                <div style={{
+                                                    paddingTop: '1.25rem',
+                                                    borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`,
+                                                    display: 'grid', gap: '1.25rem'
+                                                }}>
+
+                                                    {/* CONDITION: Sirf Success Orders par Progress dikhao */}
+                                                    {isSuccess ? (
+                                                        <CourseProgress
+                                                            createdAt={order.created_at}
+                                                            durationMonths={course.duration}
+                                                            isDark={isDark}
+                                                            colors={c}
+                                                        />
+                                                    ) : (
+                                                        <div style={{
+                                                            display: 'flex', alignItems: 'center', gap: '0.75rem',
+                                                            padding: '1rem', borderRadius: '1rem',
+                                                            backgroundColor: isDark ? 'rgba(239, 68, 68, 0.05)' : '#fff5f5',
+                                                            border: `1px solid ${orderStatus === 'pending' ? '#fbbf24' : '#fca5a5'}`,
+                                                            color: orderStatus === 'pending' ? '#d97706' : '#dc2626'
+                                                        }}>
+                                                            <AlertCircle size={20} />
+                                                            <span style={{ fontSize: '0.85rem', fontWeight: '600' }}>
+                                                                {orderStatus === 'pending'
+                                                                    ? "Progress tracking will start once payment is successful."
+                                                                    : "This course is inactive as the order was cancelled."}
+                                                            </span>
+                                                        </div>
+                                                    )}
+
+                                                    <div>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.65rem', fontWeight: '800', opacity: 0.5, marginBottom: '0.5rem' }}>
+                                                            <BookOpen size={12} /> DESCRIPTION
+                                                        </div>
+                                                        <div style={{ fontSize: '0.85rem', lineHeight: '1.6', opacity: 0.8 }}>
+                                                            {course.description || "Master this course with step-by-step guidance and professional resources."}
+                                                        </div>
+                                                    </div>
+
+                                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                                                        <div style={{ backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : '#f8fafc', padding: '0.8rem', borderRadius: '0.75rem' }}>
+                                                            <div style={{ fontSize: '0.6rem', fontWeight: '800', opacity: 0.5, marginBottom: '0.2rem' }}>DURATION</div>
+                                                            <div style={{ fontSize: '0.85rem', fontWeight: '700' }}>{course.duration} Months</div>
+                                                        </div>
+                                                        <div style={{ backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : '#f8fafc', padding: '0.8rem', borderRadius: '0.75rem' }}>
+                                                            <div style={{ fontSize: '0.6rem', fontWeight: '800', opacity: 0.5, marginBottom: '0.2rem' }}>CATEGORY ID</div>
+                                                            <div style={{ fontSize: '0.85rem', fontWeight: '700' }}>#{course.category_id}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
-                            <div style={{ fontSize: '0.75rem', opacity: 0.7, fontFamily: 'monospace' }}>
-                                {order.payment?.payment_id}
+
+                            {/* Footer Info */}
+                            <div style={{
+                                marginTop: '1.5rem', padding: '1rem', borderRadius: '1rem',
+                                backgroundColor: isDark ? 'rgba(255,255,255,0.02)' : '#f8fafc',
+                                border: `1px dashed ${isDark ? 'rgba(255,255,255,0.1)' : '#e2e8f0'}`,
+                                display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                            }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.85rem' }}>
+                                    <CreditCard size={18} opacity={0.6} />
+                                    <span>Paid via <b>{order.payment?.payment_method?.toUpperCase() || 'N/A'}</b></span>
+                                </div>
+                                <div style={{ fontSize: '0.75rem', opacity: 0.6, fontFamily: 'monospace' }}>
+                                    {order.payment?.payment_id || 'no-ref-id'}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
         </div>
     );

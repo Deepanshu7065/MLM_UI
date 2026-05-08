@@ -50,10 +50,6 @@ export default ProcessingState;
 
 
 
-
-// // const containerStyle: React.CSSProperties = {
-// //     minHeight: "100vh",
-// //     backgroundColor: isDark ? c.background.dark : c.background.light,
 // //     padding: "4rem 2rem",
 // //     transition: "background-color 0.3s ease",
 // // };
