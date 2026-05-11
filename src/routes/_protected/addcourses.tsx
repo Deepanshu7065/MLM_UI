@@ -42,7 +42,8 @@ function RouteComponent() {
   const form = useAppForm({
     defaultValues: {
       course_name: "", description: "", image: "" as any,
-      price: "", duration: "", category_id: "", user_id: user?.userId || ""
+      price: "", duration: "", category_id: "", user_id: user?.userId || "",
+      lesson: '',
     },
     onSubmit: async ({ value }: { value: FormData }) => {
       try {
@@ -55,7 +56,6 @@ function RouteComponent() {
         toast.success("Course added successfully")
         form.reset();
       } catch (error: any) {
-        console.log(error)
         toast.error(error?.response?.data?.error || "Failed to add course");
       }
     }
@@ -138,6 +138,9 @@ function RouteComponent() {
 
               <form.AppField name="category_id">
                 {(field) => <FormInput field={field} type="text" placeholder="Category ID" style={inputStyle} />}
+              </form.AppField>
+              <form.AppField name="lesson">
+                {(field) => <FormInput field={field} type="text" placeholder="Lesson" style={inputStyle} />}
               </form.AppField>
             </div>
 
