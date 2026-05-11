@@ -224,7 +224,7 @@ const OurCureseList = () => {
                     <Clock size={11} /> {item.duration}w
                   </span>
                   <span className="cc-meta-chip">
-                    <BookOpen size={11} /> {item.lessons || "0"} lessons
+                    <BookOpen size={11} /> {item.lesson || "0"} lessons
                   </span>
                 </div>
 
