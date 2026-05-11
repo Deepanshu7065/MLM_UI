@@ -7,6 +7,7 @@ import {
   Clock, ArrowRight
 } from 'lucide-react'
 import { Footer } from '@/hooks/footer'
+import { OfficeAddress } from '@/components/GlobalModal/Address'
 
 export const Route = createFileRoute('/_public/contact')({
   component: RouteComponent,
@@ -24,10 +25,10 @@ function RouteComponent() {
   const cardBg = isDark ? "#0f172a" : "#ffffff"
 
   const contactDetails = [
-    { icon: PhoneCall, label: "Phone", value: "7065867460, 9953739746" },
+    { icon: PhoneCall, label: "Phone", value: "+91 7065867460, +91 8285863367" },
     { icon: Mail, label: "Email", value: "techdmadvance@gmail.com" },
     { icon: Building2, label: "Office", value: "DM ADVANCE TECH " },
-    { icon: MapPin, label: "Address", value: "4th Floor, Khandsa Road, Gurugram (122001), Haryana" },
+    { icon: MapPin, label: "Address", value: OfficeAddress() },
     { icon: Clock, label: "Hours", value: "Mon – Sat, 9:00 AM – 6:00 PM" },
   ]
 

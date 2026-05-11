@@ -1,5 +1,6 @@
 import moment from "moment";
 import React from "react";
+import { OfficeAddress } from "./Address";
 
 const InvoiceTemplate = React.forwardRef<HTMLDivElement, { data?: any }>(
     ({ data }, ref) => {
@@ -27,10 +28,11 @@ const InvoiceTemplate = React.forwardRef<HTMLDivElement, { data?: any }>(
                         </p>
                     </div>
                     <div style={{ textAlign: 'right' }}>
-                        <p style={{ margin: 0, fontWeight: 600, fontSize: '15px' }}>Deep Tech Solutions</p>
-                        <p style={{ margin: '4px 0 0', fontSize: '12px', color: '#666', lineHeight: 1.5 }}>
-                            Sector 10A, Gurgaon, Haryana<br />support@deeptech.in
-                        </p>
+                        <p style={{ margin: 0, fontWeight: 600, fontSize: '15px' }}>DM DVANCE TECH</p>
+                        {/* <p style={{ margin: '4px 0 0', fontSize: '12px', color: '#666', lineHeight: 1.5 }}>
+                            Gali No -10, Gurgaon, Haryana<br />support@deeptech.in
+                        </p> */}
+                        <OfficeAddress />
                     </div>
                 </div>
 
@@ -114,11 +116,11 @@ const InvoiceTemplate = React.forwardRef<HTMLDivElement, { data?: any }>(
                 {/* Footer */}
                 <div style={{ borderTop: '1px solid #e0e0e0', paddingTop: '1rem', display: 'flex', justifyContent: 'space-between' }}>
                     <p style={{ fontSize: '11px', color: '#999', margin: 0, lineHeight: 1.6 }}>
-                        Thank you for enrolling with Deep Tech Solutions.<br />
-                        Computer-generated invoice — no signature required.
+                        Thank you for enrolling with DM DVANCE TECH.<br />
+                        Computer-generated invoice — DMADVANCE.
                     </p>
                     <p style={{ fontSize: '11px', color: '#999', margin: 0, textAlign: 'right', lineHeight: 1.6 }}>
-                        deeptech.in<br />CIN: U80904HR2020PTC089231
+                        techdmadvance<br />techdmadvance@gmail.com
                     </p>
                 </div>
             </div>

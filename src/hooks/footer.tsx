@@ -61,7 +61,7 @@ export function Footer() {
                     <p className="ct-ft-col-title">Address</p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                         <div style={{ display: 'flex', gap: '10px', fontSize: '0.8rem', color: textSecondary }}><Building2 size={14} color={primaryColor} /> DM ADVANCE TECH </div>
-                        <div style={{ display: 'flex', gap: '10px', fontSize: '0.8rem', color: textSecondary }}><MapPin size={14} color={primaryColor} /> Gurugram, Haryana (122001)</div>
+                        <div style={{ display: 'flex', gap: '10px', fontSize: '0.8rem', color: textSecondary }}><MapPin size={14} color={primaryColor} /> RBSP colony, Gali No -10, Bhondsi Gurugram, Haryana (122102)</div>
                         <div style={{ display: 'flex', gap: '10px', fontSize: '0.8rem', color: textSecondary }}><Mail size={14} color={primaryColor} /> techdmadvance@gmail.com</div>
                     </div>
                 </div>
