@@ -35,9 +35,9 @@ export function Footer() {
                         <span style={{ fontSize: '1.1rem', fontWeight: 900 }}>DM <span style={{ color: primaryColor }}>ADVANCE</span> TECH</span>
                     </div>
                     <p style={{ fontSize: '0.85rem', color: textSecondary, lineHeight: 1.6 }}>Empowering learners with industry-relevant skills through expert-led courses.</p>
-                    <div style={{ marginTop: '1rem', padding: '10px', border: `1px dashed ${borderColor}`, borderRadius: '8px', display: 'inline-block' }}>
+                    {/* <div style={{ marginTop: '1rem', padding: '10px', border: `1px dashed ${borderColor}`, borderRadius: '8px', display: 'inline-block' }}>
                         <span style={{ fontSize: '0.7rem', fontWeight: 800, color: primaryColor }}>GSTIN: <span style={{ color: textColor }}>06FAGPM9377H1z4</span></span>
-                    </div>
+                    </div> */}
                     <div className="ct-ft-soc-group">
                         {[Instagram, Twitter, Youtube, Facebook].map((Icon, i) => <a key={i} className="ct-ft-soc" href="#"><Icon size={16} /></a>)}
                     </div>
@@ -61,7 +61,7 @@ export function Footer() {
                     <p className="ct-ft-col-title">Address</p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                         <div style={{ display: 'flex', gap: '10px', fontSize: '0.8rem', color: textSecondary }}><Building2 size={14} color={primaryColor} /> DM ADVANCE TECH </div>
-                        <div style={{ display: 'flex', gap: '10px', fontSize: '0.8rem', color: textSecondary }}><MapPin size={14} color={primaryColor} /> RBSP colony, Gali No -10, Bhondsi Gurugram, Haryana (122102)</div>
+                        <div style={{ display: 'flex', gap: '10px', fontSize: '0.8rem', color: textSecondary }}><MapPin size={14} color={primaryColor} />  Gurugram, Haryana (122001)</div>
                         <div style={{ display: 'flex', gap: '10px', fontSize: '0.8rem', color: textSecondary }}><Mail size={14} color={primaryColor} /> techdmadvance@gmail.com</div>
                     </div>
                 </div>

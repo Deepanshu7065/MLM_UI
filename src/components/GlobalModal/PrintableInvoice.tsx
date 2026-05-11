@@ -1,6 +1,6 @@
 import moment from "moment";
 import React from "react";
-import { OfficeAddress } from "./Address";
+import { BillAddress,  } from "./Address";
 
 const InvoiceTemplate = React.forwardRef<HTMLDivElement, { data?: any }>(
     ({ data }, ref) => {
@@ -32,7 +32,7 @@ const InvoiceTemplate = React.forwardRef<HTMLDivElement, { data?: any }>(
                         {/* <p style={{ margin: '4px 0 0', fontSize: '12px', color: '#666', lineHeight: 1.5 }}>
                             Gali No -10, Gurgaon, Haryana<br />support@deeptech.in
                         </p> */}
-                        <OfficeAddress />
+                        <BillAddress />
                     </div>
                 </div>
 
