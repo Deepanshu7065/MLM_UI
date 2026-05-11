@@ -5,7 +5,7 @@ import { useTheme } from "@/theme/ThemeProvider"
 import { getThemeColor } from "@/theme/themeConfig"
 import OurCureseList from '@/components/Courses/OurCureseList'
 import { Sparkles } from 'lucide-react'
-import { Footer } from '@/components/footer'
+import { Footer } from '@/hooks/footer'
 
 export const Route = createFileRoute('/_public/courses/')({
   component: RouteComponent,
