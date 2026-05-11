@@ -8,7 +8,7 @@ export function Footer() {
     const { theme } = useTheme()
     const isDark = theme === 'dark'
 
-    const textColor = getThemeColor(theme, 'text')
+    // const textColor = getThemeColor(theme, 'text')
     const textSecondary = getThemeColor(theme, 'textSecondary')
     const primaryColor = getThemeColor(theme, 'primary')
     const borderColor = getThemeColor(theme, 'border')
