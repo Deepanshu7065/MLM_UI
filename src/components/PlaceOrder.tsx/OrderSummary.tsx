@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Lock, Tag, Receipt } from "lucide-react";
+import { Lock,  Receipt } from "lucide-react";
 
 interface OrderSummaryProps {
     cart: any[];
