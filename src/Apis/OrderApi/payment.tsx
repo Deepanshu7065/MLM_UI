@@ -263,4 +263,10 @@ export const PaymentApi = {
     });
     return res.data;
   },
+  getInvoiceData : async (orderId: string) => {
+    const res = await api.get(`${baseUrl}/invoice/${orderId}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    return res.data;
+  }
 };

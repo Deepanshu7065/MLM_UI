@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useStore } from "@tanstack/react-store";
 import { useNavigate } from "@tanstack/react-router";
-import { load } from "@cashfreepayments/cashfree-js"; // ✅ npm package
+import { load } from "@cashfreepayments/cashfree-js";
 
 
 // State & Hooks
@@ -45,14 +45,31 @@ const PayoutPage = () => {
     phone: "",
   });
 
+  // ─── GST-Inclusive Calculation ─────────────────────────────────────────────
+  // totalAmount = cart ka actual price (e.g. ₹600)
+  // GST already included hai — reverse calculate karo
+  // baseAmount = 600 / 1.18 = ₹508 (GST exclusive)
+  // gstAmount  = 600 - 508  = ₹92  (sirf GST portion)
+  // totalWithGST = 600       (same as cart price — kuch extra nahi)
+  const GST_RATE = 0.18;
+
   const totalAmount = useMemo(
     () => cart.reduce((sum, item) => sum + Number(item.course.price || 0), 0),
     [cart]
   );
-  const GST_RATE = 0.18;
-  const gstAmount = useMemo(() => Math.round(totalAmount * GST_RATE), [totalAmount]);
-  const totalWithGST = useMemo(() => totalAmount + gstAmount, [totalAmount, gstAmount]);
 
+  const baseAmount = useMemo(
+    () => Math.round(totalAmount / (1 + GST_RATE)),
+    [totalAmount]
+  );
+
+  const gstAmount = useMemo(
+    () => totalAmount - baseAmount,
+    [totalAmount, baseAmount]
+  );
+
+  // totalWithGST = totalAmount hi hai (GST already included)
+  const totalWithGST = totalAmount;
 
   const rawAuth =
     typeof window !== "undefined" ? localStorage.getItem("auth") : null;
@@ -81,11 +98,12 @@ const PayoutPage = () => {
     setLoading(true);
     try {
       // Step 1: Backend se order + session ID lo
+      // total_amount = actual cart price (GST included) — same as before
       const res = await initiateCheckout({
         name: `${userDetails.firstName} ${userDetails.lastName}`,
         email: userDetails.email,
         phone: userDetails.phone,
-        total_amount: totalAmount,
+        total_amount: totalWithGST,
         courseIds: cart.map((item) => String(item.course.id)),
       });
 
@@ -93,7 +111,7 @@ const PayoutPage = () => {
         throw new Error("Cashfree session creation failed");
       }
 
-      // // Step 2: ✅ npm package se SDK load karo (window.Cashfree nahi)
+      // Step 2: npm package se SDK load karo
       const cashfree = await load({
         mode: (import.meta.env.VITE_CASHFREE_MODE?.toLowerCase() ||
           "sandbox") as "sandbox" | "production",
@@ -111,14 +129,12 @@ const PayoutPage = () => {
 
       // Step 4: Result handle karo
       if (result.error) {
-        // User ne modal band kiya ya koi error aaya
         console.error("Payment error/cancelled:", result.error);
         setLoading(false);
         return;
       }
 
       if (result.paymentDetails || result.redirect) {
-        // Payment attempt hua — backend se verify karo
         setIsProcessing(true);
         setLoading(false);
 
@@ -130,9 +146,10 @@ const PayoutPage = () => {
 
           if (verifyRes.success) {
             setOrderData({
-              subtotal: totalAmount,      // ✅ GST ke bina
-              gstAmount: gstAmount,       // ✅ sirf GST
-              totalAmount: totalWithGST,  // ✅ GST ke saath final amount
+              orderId: verifyRes.order_id,
+              subtotal: baseAmount,
+              gstAmount: gstAmount,
+              totalAmount: totalWithGST,
             });
             setStep(3);
           } else {
@@ -150,7 +167,7 @@ const PayoutPage = () => {
       alert("Payment shuru nahi ho paya. Console check karein.");
       setLoading(false);
     }
-  }
+  };
 
 
   return (
@@ -185,7 +202,7 @@ const PayoutPage = () => {
             {isProcessing ? (
               <ProcessingState isDark={isDark} c={c} />
             ) : step === 3 ? (
-              <SuccessState navigate={navigate} isDark={isDark} c={c} orderData={orderData} />
+              <SuccessState navigate={navigate} isDark={isDark} c={c} orderId={orderData} />
             ) : (
               <>
                 {step === 1 && (
@@ -219,11 +236,13 @@ const PayoutPage = () => {
               </>
             )}
           </div>
+
+          {/* OrderSummary: subtotal = baseAmount (GST exclusive) */}
           <OrderSummary
             cart={cart}
-            subtotal={totalAmount}
-            gstAmount={gstAmount}
-            totalAmount={totalWithGST}
+            subtotal={baseAmount}      // ✅ ₹508 — GST ke bina course price
+            gstAmount={gstAmount}      // ✅ ₹92  — sirf GST
+            totalAmount={totalWithGST} // ✅ ₹600 — final
             isDark={isDark}
             c={c}
           />
@@ -231,7 +250,7 @@ const PayoutPage = () => {
       </div>
     </div>
   );
-}
+};
 
 const inputStyle = (isDark: boolean) => ({
   width: "100%",
@@ -253,7 +272,4 @@ const labelStyle = (isDark: boolean, c: any) => ({
   letterSpacing: "1px",
 });
 
-
-
 export default PayoutPage;
-

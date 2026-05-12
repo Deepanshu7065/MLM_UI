@@ -1,17 +1,94 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useGetUserOrder } from '@/hooks/Order.mutate';
 import { useTheme } from '@/theme/ThemeProvider';
 import { themeColors } from '@/theme/themeConfig';
 import {
     CreditCard,
     ChevronRight, ReceiptText,
-    BookOpen, AlertCircle
+    BookOpen, AlertCircle, Printer, Loader
 } from 'lucide-react';
 import CourseProgress from './CourseProgress';
+import { useGetInvoiceData } from '@/hooks/Payment.mutate';
+import InvoiceTemplate from '../GlobalModal/PrintableInvoice';
+import { useReactToPrint } from 'react-to-print';
 
+// ─── Per-order print component ────────────────────────────────────────────────
+const PrintableOrder = ({ orderId, isDark, c }: { orderId: string | number, isDark: boolean, c: any }) => {
+    const invoiceRef = useRef<HTMLDivElement>(null);
+    const [invoiceData, setInvoiceData] = useState<any>(null);
 
+    // ✅ mutation — sirf button click pe call hoga, automatic nahi
+    const { mutateAsync: fetchInvoice, isPending } = useGetInvoiceData();
 
+    const handlePrint = useReactToPrint({
+        contentRef: invoiceRef,
+        documentTitle: `Invoice-${orderId}`,
+        pageStyle: `
+            @page { size: A4; margin: 20mm; }
+            body { background: #fff !important; }
+        `,
+    });
 
+    const handlePrintClick = async () => {
+        try {
+            // Har baar fresh data fetch karo
+            const res = await fetchInvoice(String(orderId));
+            if (res?.data) {
+                setInvoiceData(res.data);
+                // Re-render ke baad print
+                setTimeout(() => handlePrint(), 300);
+            }
+        } catch (err) {
+            console.error("Invoice fetch error:", err);
+            alert("Invoice load nahi hua. Please try again.");
+        }
+    };
+
+    const accent = isDark ? c.primary.dark : c.primary.light;
+
+    return (
+        <>
+            {/* Hidden invoice — sirf print ke liye */}
+            <div style={{
+                position: 'absolute',
+                left: '-9999px',
+                top: 0,
+                width: '720px',
+                pointerEvents: 'none',
+            }}>
+                <InvoiceTemplate ref={invoiceRef} data={invoiceData} />
+            </div>
+
+            <button
+                onClick={handlePrintClick}
+                disabled={isPending}
+                style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    fontSize: '0.75rem',
+                    fontWeight: '700',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '0.75rem',
+                    border: `1.5px solid ${accent}`,
+                    background: 'transparent',
+                    color: accent,
+                    cursor: isPending ? 'not-allowed' : 'pointer',
+                    opacity: isPending ? 0.6 : 1,
+                    transition: 'all 0.2s ease',
+                }}
+            >
+                {isPending
+                    ? <><Loader size={14} style={{ animation: 'spin 1s linear infinite' }} /> Loading...</>
+                    : <><Printer size={14} /> Print Invoice</>
+                }
+            </button>
+            <style>{`@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }`}</style>
+        </>
+    );
+};
+
+// ─── Main Component ───────────────────────────────────────────────────────────
 const UserOrder = () => {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
@@ -83,16 +160,31 @@ const UserOrder = () => {
                                     </div>
                                     <div>
                                         <div style={{ fontSize: '0.65rem', fontWeight: '800', opacity: 0.5, textTransform: 'uppercase' }}>Total</div>
-                                        <div style={{ fontWeight: '900', color: isDark ? c.primary.dark : c.primary.light }}>₹{order.totalAmount.toLocaleString()}</div>
+                                        <div style={{ fontWeight: '900', color: isDark ? c.primary.dark : c.primary.light }}>
+                                            ₹{order.totalAmount.toLocaleString()}
+                                        </div>
                                     </div>
                                 </div>
-                                <div style={{
-                                    padding: '0.4rem 0.9rem', borderRadius: '2rem', fontSize: '0.7rem', fontWeight: '900',
-                                    backgroundColor: isSuccess ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-                                    color: isSuccess ? '#10b981' : '#ef4444',
-                                    border: `1px solid ${isSuccess ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)'}`
-                                }}>
-                                    {order.status.toUpperCase()}
+
+                                {/* Status + Print button */}
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                    <div style={{
+                                        padding: '0.4rem 0.9rem', borderRadius: '2rem', fontSize: '0.7rem', fontWeight: '900',
+                                        backgroundColor: isSuccess ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                                        color: isSuccess ? '#10b981' : '#ef4444',
+                                        border: `1px solid ${isSuccess ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)'}`
+                                    }}>
+                                        {order.status.toUpperCase()}
+                                    </div>
+
+                                    {/* Print button — sirf completed orders pe */}
+                                    {isSuccess && (
+                                        <PrintableOrder
+                                            orderId={order.orderId}
+                                            isDark={isDark}
+                                            c={c}
+                                        />
+                                    )}
                                 </div>
                             </div>
 
@@ -126,7 +218,7 @@ const UserOrder = () => {
                                                 </div>
                                             </div>
 
-                                            {/* Expanded Content Section */}
+                                            {/* Expanded Content */}
                                             <div style={{
                                                 maxHeight: isExpanded ? '800px' : '0px',
                                                 opacity: isExpanded ? 1 : 0,
@@ -139,8 +231,6 @@ const UserOrder = () => {
                                                     borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`,
                                                     display: 'grid', gap: '1.25rem'
                                                 }}>
-
-                                                    {/* CONDITION: Sirf Success Orders par Progress dikhao */}
                                                     {isSuccess ? (
                                                         <CourseProgress
                                                             createdAt={order.created_at}

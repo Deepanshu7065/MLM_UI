@@ -93,6 +93,14 @@ export const useUpdateWithdrawStatus = () => {
     });
 }
 
+
+export const useGetInvoiceData = () => {
+    return useMutation({
+        mutationFn: (order_id: string) => PaymentApi.getInvoiceData(order_id)
+    });
+}
+
+
 // import { PaymentApi, type paymentType } from "@/Apis/OrderApi/payment";
 // import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 

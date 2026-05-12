@@ -2,63 +2,53 @@
 
 import { CheckCircle, Printer, BookOpen } from "lucide-react";
 import InvoiceTemplate from "../GlobalModal/PrintableInvoice";
-import { useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useReactToPrint } from 'react-to-print';
+import { useGetInvoiceData } from "@/hooks/Payment.mutate";
 
 interface SuccessStateProps {
     navigate: (path: { to: string }) => void;
     isDark: boolean;
     c: any;
-    orderData: any;
+    orderId: any;
 }
 
-
-const dummyOrderData = {
-    orderId: "ORD-20847",
-    created_at: "2026-05-07T10:30:00Z",
-    status: "paid",
-    totalAmount: 11462,
-    user: {
-        name: "Arjun Mehta",
-        email: "arjun.mehta@gmail.com",
-        phone: "+91 98100 12345",
-    },
-    ordered_courses: [
-        {
-            id: 1,
-            course_name: "Full-Stack Web Development Bootcamp",
-            price: 4999,
-        },
-        {
-            id: 2,
-            course_name: "Machine Learning with Python",
-            price: 3499,
-        },
-        {
-            id: 3,
-            course_name: "UI/UX Design Fundamentals",
-            price: 2299,
-        },
-    ],
-};
-
 const SuccessState: React.FC<SuccessStateProps> = ({
-    navigate, isDark, c, orderData
+    navigate, isDark, c, orderId
 }) => {
+    const [orderData, setInvoiceData] = useState<any>(null);
+    const { mutateAsync: fetchInvoice, isPending } = useGetInvoiceData();
     const accent = isDark ? c.primary.dark : c.primary.light;
     const invoiceRef = useRef<HTMLDivElement>(null);
     const handlePrint = useReactToPrint({
         contentRef: invoiceRef,
-        documentTitle: `Invoice-${dummyOrderData?.orderId}`,
+        documentTitle: `Invoice-${orderId}`,
         pageStyle: `
       @page { size: A4; margin: 20mm; }
       body { background: #fff !important; }
     `,
     });
 
+
+    const handlePrintClick = async () => {
+        try {
+            // Har baar fresh data fetch karo
+            const res = await fetchInvoice(String(orderId));
+            if (res?.data) {
+                setInvoiceData(res.data);
+                // Re-render ke baad print
+                setTimeout(() => handlePrint(), 300);
+            }
+        } catch (err) {
+            console.error("Invoice fetch error:", err);
+            alert("Invoice load nahi hua. Please try again.");
+        }
+    };
+
+   
+
     return (
         <>
-            {/* Hidden invoice for printing */}
             <div style={{
                 position: "absolute",
                 left: "-9999px",
@@ -66,7 +56,7 @@ const SuccessState: React.FC<SuccessStateProps> = ({
                 width: "720px",
                 pointerEvents: "none",
             }}>
-                <InvoiceTemplate ref={invoiceRef} data={dummyOrderData} />
+                <InvoiceTemplate ref={invoiceRef} data={orderData} />
             </div>
 
             <div style={styles.wrapper}>
@@ -94,7 +84,7 @@ const SuccessState: React.FC<SuccessStateProps> = ({
                     </button>
 
                     <button
-                        onClick={() => handlePrint()}
+                        onClick={handlePrintClick}
                         style={styles.btnOutline(accent, isDark)}
                     >
                         <Printer size={18} /> Print bill
