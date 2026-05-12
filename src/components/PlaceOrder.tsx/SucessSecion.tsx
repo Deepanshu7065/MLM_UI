@@ -2,7 +2,7 @@
 
 import { CheckCircle, Printer, BookOpen } from "lucide-react";
 import InvoiceTemplate from "../GlobalModal/PrintableInvoice";
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useReactToPrint } from 'react-to-print';
 import { useGetInvoiceData } from "@/hooks/Payment.mutate";
 
@@ -17,7 +17,7 @@ const SuccessState: React.FC<SuccessStateProps> = ({
     navigate, isDark, c, orderId
 }) => {
     const [orderData, setInvoiceData] = useState<any>(null);
-    const { mutateAsync: fetchInvoice, isPending } = useGetInvoiceData();
+    const { mutateAsync: fetchInvoice, } = useGetInvoiceData();
     const accent = isDark ? c.primary.dark : c.primary.light;
     const invoiceRef = useRef<HTMLDivElement>(null);
     const handlePrint = useReactToPrint({
@@ -45,7 +45,7 @@ const SuccessState: React.FC<SuccessStateProps> = ({
         }
     };
 
-   
+
 
     return (
         <>
