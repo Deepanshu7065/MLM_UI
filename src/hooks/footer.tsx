@@ -1,7 +1,9 @@
 import { useNavigate } from '@tanstack/react-router'
 import { useTheme } from "@/theme/ThemeProvider"
 import { getThemeColor } from "@/theme/themeConfig"
-import { LayoutGrid, Instagram, Twitter, Youtube, Facebook, ArrowRight, Mail, MapPin, Building2 } from 'lucide-react'
+import {  Instagram, Twitter, Youtube, Facebook, ArrowRight, Mail, MapPin, Building2 } from 'lucide-react'
+import logo from "../../public/assets/logo.png"
+
 
 export function Footer() {
     const navigate = useNavigate()
@@ -31,8 +33,25 @@ export function Footer() {
             <div className="ct-ft-grid">
                 <div className="ct-ft-brand">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem' }}>
-                        <div style={{ background: primaryColor, padding: '0.4rem', borderRadius: '8px' }}><LayoutGrid size={18} color="white" /></div>
-                        <span style={{ fontSize: '1.1rem', fontWeight: 900 }}>DM <span style={{ color: primaryColor }}>ADVANCE</span> TECH</span>
+                        {/* <div style={{ background: primaryColor, padding: '0.4rem', borderRadius: '8px' }}><LayoutGrid size={18} color="white" /></div>
+                        <span style={{ fontSize: '1.1rem', fontWeight: 900 }}>DM <span style={{ color: primaryColor }}>ADVANCE</span> TECH</span> */}
+
+                        <span className="logo-font" style={{
+                            fontSize: "1.15rem",
+                            fontWeight: 800,
+                            display: "flex",
+                            alignItems: "center",
+                            marginLeft: "-1.5rem",
+                            letterSpacing: "-0.5px"
+                        }}>
+                            <img
+                                src={logo}
+                                alt="logo"
+                                style={{ width: 198, height: 108, }}
+                                loading="lazy"
+                                decoding="async"
+                            />
+                        </span>
                     </div>
                     <p style={{ fontSize: '0.85rem', color: textSecondary, lineHeight: 1.6 }}>Empowering learners with industry-relevant skills through expert-led courses.</p>
                     {/* <div style={{ marginTop: '1rem', padding: '10px', border: `1px dashed ${borderColor}`, borderRadius: '8px', display: 'inline-block' }}>

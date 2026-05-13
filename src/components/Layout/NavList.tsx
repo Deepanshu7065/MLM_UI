@@ -6,6 +6,7 @@ import { Sun, Moon, LayoutGrid, UserPlus, LogIn, Menu, X, Home, Info, BookOpen, 
 import { useTheme } from "@/theme/ThemeProvider"
 import { themeColors, getThemeColor } from "@/theme/themeConfig"
 import { Button } from "../ui/button"
+import logo from "../../../public/assets/logo.png"
 
 export function NavList() {
   const { theme, toggleTheme } = useTheme()
@@ -183,15 +184,24 @@ export function NavList() {
         {/* Logo */}
         <div onClick={() => navigate({ to: "/home" })}
           style={{ display: "flex", alignItems: "center", gap: "0.55rem", cursor: "pointer", flexShrink: 0 }}>
-          <div style={{ background: primary, padding: "0.45rem", borderRadius: "10px", display: "flex" }}>
+          {/* <div style={{ background: primary, padding: "0.45rem", borderRadius: "10px", display: "flex" }}>
             <LayoutGrid size={19} color={isDark ? "#000" : "#fff"} />
-          </div>
-          <span className="syne" style={{ fontSize: "1.15rem", fontWeight: 800, color: text, letterSpacing: "-0.4px" }}>
-            DM <span style={{ color: primary }}>ADV</span>
-            <span className="nl-tech-suffix" style={{ color: text, fontWeight: 600 }}>ANCE</span>
-            <span className="nl-tech-suffix" style={{ color: primary, fontWeight: 600, marginLeft: "6px" }}>
-              TECH
-            </span>
+          </div> */}
+          <span className="logo-font" style={{
+            fontSize: "1.15rem",
+            fontWeight: 800,
+            color: text,
+            display: "flex",
+            alignItems: "center",
+            letterSpacing: "-0.5px"
+          }}>
+            <img
+              src={logo}
+              alt="logo"
+              style={{ width: 168, height: 98, marginRight: "4px", }}
+              loading="lazy"
+              decoding="async"
+            />
           </span>
         </div>
 

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "@tanstack/react-router";
 import {
-  LogOut, Store, Sun, Moon, ChevronDown, LayoutDashboard,
+  LogOut, Store, Sun, Moon, ChevronDown,
   Menu, X, ChevronRight, User, ShoppingBag, CreditCard,
   CheckCircle2, Home, BookOpen, Phone, Users, Shield,
   PlusCircle, ListOrdered, Ticket, BarChart3
@@ -15,6 +15,7 @@ import { useTheme } from "@/theme/ThemeProvider";
 import { themeColors, getThemeColor } from "@/theme/themeConfig";
 import { userStore } from "@/store/user.store";
 import { Button } from "../ui/button";
+import logo from "../../../public/assets/logo.png"
 
 export function Navbar() {
   const { theme, toggleTheme } = useTheme();
@@ -280,18 +281,24 @@ export function Navbar() {
         {/* ── Logo ── */}
         <div onClick={() => navigate({ to: "/" })}
           style={{ display: "flex", alignItems: "center", gap: "0.55rem", cursor: "pointer", flexShrink: 0 }}>
-          <div style={{ background: primary, padding: "0.45rem", borderRadius: "10px", display: "flex" }}>
+          {/* <div style={{ background: primary, padding: "0.45rem", borderRadius: "10px", display: "flex" }}>
             <LayoutDashboard size={19} color={isDark ? "#000" : "#fff"} />
-          </div>
-          <span className="logo-font" style={{ fontSize: "1.15rem", fontWeight: 800, color: text, letterSpacing: "-0.5px" }}>
-            DM <span style={{ color: primary, letterSpacing: "-0.5px", fontSize: "1.15rem", fontWeight: 600 }}>
-              ADV</span>
-            <span className="logo-suffix" style={{ color: text, fontWeight: 600, letterSpacing: "-0.5px", fontSize: "1.15rem" }}>
-              ANCE
-            </span>
-            <span className="logo-suffix" style={{ color: primary, fontWeight: 600, marginLeft: "6px", letterSpacing: "-0.5px", fontSize: "1.15rem" }}>
-              TECH
-            </span>
+          </div> */}
+          <span className="logo-font" style={{
+            fontSize: "1.15rem",
+            fontWeight: 800,
+            color: text,
+            display: "flex",
+            alignItems: "center",
+            letterSpacing: "-0.5px"
+          }}>
+            <img
+              src={logo}
+              alt="logo"
+              style={{ width: 168, height: 98, marginRight: "4px", }}
+              loading="lazy"
+              decoding="async"
+            />
           </span>
         </div>
 
