@@ -270,7 +270,7 @@ const UserOrder = () => {
                                                             <div style={{ fontSize: '0.85rem', fontWeight: '700' }}>{course.duration} Months</div>
                                                         </div>
                                                         <div style={{ backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : '#f8fafc', padding: '0.8rem', borderRadius: '0.75rem' }}>
-                                                            <div style={{ fontSize: '0.6rem', fontWeight: '800', opacity: 0.5, marginBottom: '0.2rem' }}>CATEGORY ID</div>
+                                                            <div style={{ fontSize: '0.6rem', fontWeight: '800', opacity: 0.5, marginBottom: '0.2rem' }}>SAC Code</div>
                                                             <div style={{ fontSize: '0.85rem', fontWeight: '700' }}>#{course.category_id}</div>
                                                         </div>
                                                     </div>

@@ -195,7 +195,7 @@ const AllOrder = () => {
                                             />
                                             <div style={{ flex: 1 }}>
                                                 <div style={{ fontWeight: '700', fontSize: '0.9rem', marginBottom: '2px' }}>{course.course_name}</div>
-                                                <div style={{ fontSize: '0.75rem', opacity: 0.6, marginBottom: '4px' }}>Category ID: {course.category_id}</div>
+                                                <div style={{ fontSize: '0.75rem', opacity: 0.6, marginBottom: '4px' }}>SAC Code: {course.category_id}</div>
                                                 <div style={{ fontSize: '0.9rem', fontWeight: '800', color: isDark ? c.primary.dark : c.primary.light }}>₹{course.price}</div>
                                             </div>
                                         </div>

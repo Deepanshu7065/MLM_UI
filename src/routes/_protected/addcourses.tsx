@@ -137,7 +137,7 @@ function RouteComponent() {
               </form.AppField>
 
               <form.AppField name="category_id">
-                {(field) => <FormInput field={field} type="text" placeholder="Category ID" style={inputStyle} />}
+                {(field) => <FormInput field={field} type="text" placeholder="SAC Code" style={inputStyle} />}
               </form.AppField>
               <form.AppField name="lesson">
                 {(field) => <FormInput field={field} type="text" placeholder="Lesson" style={inputStyle} />}

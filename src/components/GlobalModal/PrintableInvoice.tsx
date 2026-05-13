@@ -74,7 +74,7 @@ const InvoiceTemplate = React.forwardRef<HTMLDivElement, { data?: any }>(
                                 textAlign: 'left', fontSize: '11px', textTransform: 'uppercase',
                                 letterSpacing: '0.06em', color: '#666', fontWeight: 500
                             }}>
-                                CourseId
+                                SAC Code
                             </th>
                             <th style={{
                                 padding: '10px 12px', border: '1px solid #e0e0e0',
