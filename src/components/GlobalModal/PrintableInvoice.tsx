@@ -69,6 +69,12 @@ const InvoiceTemplate = React.forwardRef<HTMLDivElement, { data?: any }>(
                 <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px' }}>
                     <thead>
                         <tr style={{ background: '#f5f5f5' }}>
+
+                            <th style={{
+                                padding: '10px 12px', border: '1px solid #e0e0e0',
+                                textAlign: 'left', fontSize: '11px', textTransform: 'uppercase',
+                                letterSpacing: '0.06em', color: '#666', fontWeight: 500
+                            }}>Course name</th>
                             <th style={{
                                 padding: '10px 12px', border: '1px solid #e0e0e0',
                                 textAlign: 'left', fontSize: '11px', textTransform: 'uppercase',
@@ -76,11 +82,6 @@ const InvoiceTemplate = React.forwardRef<HTMLDivElement, { data?: any }>(
                             }}>
                                 SAC Code
                             </th>
-                            <th style={{
-                                padding: '10px 12px', border: '1px solid #e0e0e0',
-                                textAlign: 'left', fontSize: '11px', textTransform: 'uppercase',
-                                letterSpacing: '0.06em', color: '#666', fontWeight: 500
-                            }}>Course name</th>
                             <th style={{
                                 padding: '10px 12px', border: '1px solid #e0e0e0',
                                 textAlign: 'right', width: '100px', fontSize: '11px',
@@ -93,10 +94,10 @@ const InvoiceTemplate = React.forwardRef<HTMLDivElement, { data?: any }>(
                         {data.ordered_courses?.map((item: any) => (
                             <tr key={item.id}>
                                 <td style={{ padding: '10px 12px', border: '1px solid #e0e0e0' }}>
-                                    {item.category_id}
+                                    {item.course_name}
                                 </td>
                                 <td style={{ padding: '10px 12px', border: '1px solid #e0e0e0' }}>
-                                    {item.course_name}
+                                    {item.category_id}
                                 </td>
                                 <td style={{ padding: '10px 12px', border: '1px solid #e0e0e0', textAlign: 'right', fontWeight: 500 }}>
                                     ₹{Number(item.price).toLocaleString('en-IN')}
