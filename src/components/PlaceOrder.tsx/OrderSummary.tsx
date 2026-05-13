@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Lock,  Receipt } from "lucide-react";
+import { Lock, Receipt } from "lucide-react";
 
 interface OrderSummaryProps {
     cart: any[];
@@ -51,17 +51,33 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
             {/* Cart Items */}
             <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", marginBottom: "2.5rem" }}>
                 {cart.length > 0 ? cart.map((item: any) => (
-                    <div key={item.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-                            <img
-                                src={item.course.image}
-                                alt={item.course.course_name}
-                                style={{
-                                    width: "50px", height: "35px",
-                                    borderRadius: "0.5rem", objectFit: "cover",
-                                    backgroundColor: isDark ? "#1e293b" : "#e2e8f0",
-                                }}
-                            />
+                    <div key={item.id}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+                                <img
+                                    src={item.course.image}
+                                    alt={item.course.course_name}
+                                    style={{
+                                        width: "50px", height: "35px",
+                                        borderRadius: "0.5rem", objectFit: "cover",
+                                        backgroundColor: isDark ? "#1e293b" : "#e2e8f0",
+                                    }}
+                                />
+                                <p style={{
+                                    fontSize: "0.85rem", fontWeight: "700",
+                                    color: isDark ? "#cbd5e1" : "#1e293b",
+                                    maxWidth: "150px", whiteSpace: "nowrap",
+                                    overflow: "hidden", textOverflow: "ellipsis",
+                                    margin: 0,
+                                }}>
+                                    {item.course.course_name}
+                                </p>
+                            </div>
+                            <span style={{ fontSize: "0.85rem", fontWeight: "800", color: isDark ? "#fff" : "#000" }}>
+                                ₹{Number(item.course.price).toLocaleString('en-IN')}
+                            </span>
+                        </div>
+                        <div style={{ display: "flex", marginTop: "0.5rem", gap: "1rem", alignItems: "center" }}>
                             <p style={{
                                 fontSize: "0.85rem", fontWeight: "700",
                                 color: isDark ? "#cbd5e1" : "#1e293b",
@@ -69,12 +85,12 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                                 overflow: "hidden", textOverflow: "ellipsis",
                                 margin: 0,
                             }}>
-                                {item.course.course_name}
+                                SAC Code
                             </p>
+                            <span style={{ fontSize: "0.85rem", fontWeight: "800", color: isDark ? "#fff" : "#000" }}>
+                                {item?.course?.category_id || "—"}
+                            </span>
                         </div>
-                        <span style={{ fontSize: "0.85rem", fontWeight: "800", color: isDark ? "#fff" : "#000" }}>
-                            ₹{Number(item.course.price).toLocaleString('en-IN')}
-                        </span>
                     </div>
                 )) : (
                     <p style={{ fontSize: "0.85rem", color: "#64748b" }}>Your cart is empty.</p>
