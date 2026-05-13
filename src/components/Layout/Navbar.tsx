@@ -16,7 +16,7 @@ import { themeColors, getThemeColor } from "@/theme/themeConfig";
 import { userStore } from "@/store/user.store";
 import { Button } from "../ui/button";
 import logo from "../../../public/assets/logo.png"
-import darkLogo from "../../../public/assets/lightThemeLogo.jpeg"
+import darkLogo from "../../../public/assets/darkLogo.png"
 
 export function Navbar() {
   const { theme, toggleTheme } = useTheme();

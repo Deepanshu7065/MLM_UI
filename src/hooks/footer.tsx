@@ -3,7 +3,7 @@ import { useTheme } from "@/theme/ThemeProvider"
 import { getThemeColor } from "@/theme/themeConfig"
 import { Instagram, Twitter, Youtube, Facebook, ArrowRight, Mail, MapPin, Building2 } from 'lucide-react'
 import logo from "../../public/assets/logo.png"
-import darkLogo from "../../public/assets/lightThemeLogo.jpeg"
+import darkLogo from "../../public/assets/darkLogo.png"
 
 
 export function Footer() {

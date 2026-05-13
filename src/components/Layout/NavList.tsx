@@ -7,7 +7,7 @@ import { useTheme } from "@/theme/ThemeProvider"
 import { themeColors, getThemeColor } from "@/theme/themeConfig"
 import { Button } from "../ui/button"
 import logo from "../../../public/assets/logo.png"
-import darkLogo from "../../../public/assets/lightThemeLogo.jpeg"
+import darkLogo from "../../../public/assets/darkLogo.png"
 
 
 export function NavList() {
