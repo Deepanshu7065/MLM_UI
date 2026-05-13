@@ -16,6 +16,7 @@ import { themeColors, getThemeColor } from "@/theme/themeConfig";
 import { userStore } from "@/store/user.store";
 import { Button } from "../ui/button";
 import logo from "../../../public/assets/logo.png"
+import darkLogo from "../../../public/assets/lightThemeLogo.jpeg"
 
 export function Navbar() {
   const { theme, toggleTheme } = useTheme();
@@ -293,9 +294,9 @@ export function Navbar() {
             letterSpacing: "-0.5px"
           }}>
             <img
-              src={logo}
+              src={isDark ? darkLogo : logo}
               alt="logo"
-              style={{ width: 168, height: 98, marginRight: "4px", }}
+              style={{ width: 168, height: 98, marginRight: "4px" }}
               loading="lazy"
               decoding="async"
             />

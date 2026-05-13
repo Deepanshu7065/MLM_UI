@@ -1,8 +1,9 @@
 import { useNavigate } from '@tanstack/react-router'
 import { useTheme } from "@/theme/ThemeProvider"
 import { getThemeColor } from "@/theme/themeConfig"
-import {  Instagram, Twitter, Youtube, Facebook, ArrowRight, Mail, MapPin, Building2 } from 'lucide-react'
+import { Instagram, Twitter, Youtube, Facebook, ArrowRight, Mail, MapPin, Building2 } from 'lucide-react'
 import logo from "../../public/assets/logo.png"
+import darkLogo from "../../../public/assets/lightThemeLogo.jpeg"
 
 
 export function Footer() {
@@ -45,7 +46,7 @@ export function Footer() {
                             letterSpacing: "-0.5px"
                         }}>
                             <img
-                                src={logo}
+                                src={isDark ? darkLogo : logo}
                                 alt="logo"
                                 style={{ width: 198, height: 108, }}
                                 loading="lazy"
