@@ -1,45 +1,47 @@
 "use client"
-import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
 const SocketContext = createContext<Socket | null>(null);
 
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_API_URL || "https://server.dm-advancetech.com";
 
-export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
-    const socketRef = useRef<Socket | null>(null);
-    const [socket, setSocket] = useState<Socket | null>(null);
+let socketInstance: Socket | null = null;
 
-    useEffect(() => {
-        if (socketRef.current?.connected) return;
-
-        const newSocket = io(SOCKET_URL, {
+const getSocketInstance = (): Socket => {
+    if (!socketInstance) {
+        socketInstance = io(SOCKET_URL, {
             transports: ["websocket", "polling"],
             withCredentials: true,
             reconnection: true,
-            reconnectionAttempts: 5,
+            reconnectionAttempts: 10,
             reconnectionDelay: 1000,
+            autoConnect: true,
         });
 
-        newSocket.on("connect", () => {
-            console.log("✅ Socket Connected:", newSocket.id);
+        socketInstance.on("connect", () => {
+            console.log("✅ Socket Connected:", socketInstance?.id);
         });
 
-        newSocket.on("disconnect", (reason: string) => {
+        socketInstance.on("disconnect", (reason: string) => {
             console.log("❌ Socket Disconnected:", reason);
         });
 
-        newSocket.on("connect_error", (err: Error) => {
+        socketInstance.on("connect_error", (err: Error) => {
             console.error("⚠️ Socket Connection Error:", err.message);
         });
+    } else if (socketInstance.disconnected) {
+        socketInstance.connect();
+    }
+    return socketInstance;
+};
 
-        socketRef.current = newSocket;
-        setSocket(newSocket);
+export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
+    const [socket, setSocket] = useState<Socket | null>(null);
 
-        return () => {
-            newSocket.disconnect();
-            socketRef.current = null;
-        };
+    useEffect(() => {
+        const s = getSocketInstance();
+        setSocket(s);
     }, []);
 
     return (
