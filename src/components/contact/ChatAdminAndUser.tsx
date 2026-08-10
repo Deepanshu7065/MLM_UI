@@ -63,7 +63,6 @@ export function TicketChat({ ticketId, isAdmin }: { ticketId: string, isAdmin: b
     )
 
     return (
-        // height:100% + flex column fills whatever parent gives
         <div style={{
             height: '100%',
             display: 'flex',
@@ -71,7 +70,6 @@ export function TicketChat({ ticketId, isAdmin }: { ticketId: string, isAdmin: b
             overflow: 'hidden',
             backgroundColor: isDark ? c.background.dark : '#fff',
         }}>
-            {/* ── Scrollable messages ── */}
             <div style={{
                 flex: 1,
                 overflowY: 'auto',
@@ -79,7 +77,7 @@ export function TicketChat({ ticketId, isAdmin }: { ticketId: string, isAdmin: b
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '10px',
-                minHeight: 0,   // crucial: lets flexbox shrink below content size
+                minHeight: 0,
             }}>
                 {messages.length === 0 ? (
                     <p style={{ textAlign: 'center', opacity: 0.4, marginTop: '2rem', fontSize: '0.88rem' }}>

@@ -4,6 +4,8 @@ import { io, Socket } from "socket.io-client";
 
 const SocketContext = createContext<Socket | null>(null);
 
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_API_URL || "https://server.dm-advancetech.com";
+
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     const socketRef = useRef<Socket | null>(null);
     const [socket, setSocket] = useState<Socket | null>(null);
@@ -11,9 +13,8 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         if (socketRef.current?.connected) return;
 
-        // Note: Production mein ye IP change karke backend URL dalna hoga
-        const newSocket = io("https://server.dm-advancetech.com", {
-            transports: ["websocket"],
+        const newSocket = io(SOCKET_URL, {
+            transports: ["websocket", "polling"],
             withCredentials: true,
             reconnection: true,
             reconnectionAttempts: 5,
@@ -24,12 +25,10 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
             console.log("✅ Socket Connected:", newSocket.id);
         });
 
-        // ✅ 'reason' ko string type diya
         newSocket.on("disconnect", (reason: string) => {
             console.log("❌ Socket Disconnected:", reason);
         });
 
-        // ✅ 'err' ko Error type diya
         newSocket.on("connect_error", (err: Error) => {
             console.error("⚠️ Socket Connection Error:", err.message);
         });
