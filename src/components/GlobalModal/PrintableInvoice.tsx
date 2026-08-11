@@ -11,6 +11,15 @@ const InvoiceTemplate = React.forwardRef<HTMLDivElement, { data?: any }>(
         const gstAmount = data.gstAmount ?? 0;
         const totalAmount = data.totalAmount ?? 0;
 
+        const isIgst = Boolean(
+            data.isIgst ||
+            (data.user?.state &&
+             data.user.state.trim().toLowerCase() !== 'haryana' &&
+             data.user.state.trim().toLowerCase() !== 'hr')
+        );
+        const cgstAmount = Math.floor(gstAmount / 2);
+        const sgstAmount = gstAmount - cgstAmount;
+
         return (
             <div ref={ref} style={{
                 background: '#fff', color: '#000',
@@ -109,15 +118,37 @@ const InvoiceTemplate = React.forwardRef<HTMLDivElement, { data?: any }>(
 
                 {/* Totals */}
                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '2rem' }}>
-                    <div style={{ minWidth: '220px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', borderBottom: '1px solid #e0e0e0', color: '#555' }}>
-                            <span>Subtotal</span>
+                    <div style={{ minWidth: '260px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', color: '#555' }}>
+                            <span>Subtotal (Excl. GST)</span>
                             <span>₹{subtotal.toLocaleString('en-IN')}</span>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', borderBottom: '1px solid #e0e0e0', color: '#555' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0 2px', color: '#555' }}>
                             <span>GST (18%)</span>
-                            <span>₹{gstAmount.toLocaleString('en-IN')}</span>
+                            <span>+ ₹{gstAmount.toLocaleString('en-IN')}</span>
                         </div>
+
+                        {/* CGST + SGST or IGST Breakdown */}
+                        <div style={{ paddingLeft: '12px', paddingBottom: '6px', borderBottom: '1px solid #e0e0e0', color: '#777', fontSize: '11px' }}>
+                            {isIgst ? (
+                                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '1px 0' }}>
+                                    <span>• IGST (18%)</span>
+                                    <span>₹{gstAmount.toLocaleString('en-IN')}</span>
+                                </div>
+                            ) : (
+                                <>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '1px 0' }}>
+                                        <span>• CGST (9%)</span>
+                                        <span>₹{cgstAmount.toLocaleString('en-IN')}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '1px 0' }}>
+                                        <span>• SGST (9%)</span>
+                                        <span>₹{sgstAmount.toLocaleString('en-IN')}</span>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+
                         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0 5px', borderTop: '2px solid #000', fontWeight: 600, fontSize: '15px' }}>
                             <span>Total paid</span>
                             <span>₹{totalAmount.toLocaleString('en-IN')}</span>

@@ -12,6 +12,8 @@ import { themeColors } from "@/theme/themeConfig";
 // UI Components
 import { CreditCard, CheckCircle, ArrowRight, ArrowLeft, Loader2, QrCode, Lock } from "lucide-react";
 
+import { calculateGSTDetails } from "@/lib/gstUtils";
+
 const PayoutPage = () => {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
@@ -19,6 +21,7 @@ const PayoutPage = () => {
 
     const cart = useStore(CourseStore, (s) => s.cart);
     const totalAmount = cart.reduce((sum, item) => sum + Number(item.course.price || 0), 0);
+    const gstDetails = calculateGSTDetails(totalAmount, false);
     const navigate = useNavigate();
 
     const [step, setStep] = useState(1);
@@ -236,13 +239,36 @@ const PayoutPage = () => {
                         </div>
 
                         <div style={{ borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : '#e2e8f0'}`, paddingTop: '1.5rem' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b', fontSize: '0.9rem', marginBottom: '0.5rem' }}>
-                                <span>Subtotal</span>
-                                <span>₹{totalAmount}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b', fontSize: '0.85rem', marginBottom: '0.4rem' }}>
+                                <span>Subtotal (Excl. GST)</span>
+                                <span>₹{gstDetails.subtotal.toLocaleString('en-IN')}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b', fontSize: '0.85rem', marginBottom: '0.2rem' }}>
+                                <span>GST (18%)</span>
+                                <span>+ ₹{gstDetails.gstAmount.toLocaleString('en-IN')}</span>
+                            </div>
+                            <div style={{ paddingLeft: '1rem', marginBottom: '0.75rem', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                                {gstDetails.isIgst ? (
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#94a3b8' }}>
+                                        <span>• IGST (18%)</span>
+                                        <span>₹{gstDetails.igstAmount.toLocaleString('en-IN')}</span>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#94a3b8' }}>
+                                            <span>• CGST (9%)</span>
+                                            <span>₹{gstDetails.cgstAmount.toLocaleString('en-IN')}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#94a3b8' }}>
+                                            <span>• SGST (9%)</span>
+                                            <span>₹{gstDetails.sgstAmount.toLocaleString('en-IN')}</span>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem', paddingTop: '0.75rem', borderTop: `1px dashed ${isDark ? 'rgba(255,255,255,0.08)' : '#e2e8f0'}` }}>
                                 <span style={{ fontWeight: '800' }}>Total</span>
-                                <span style={{ fontSize: '2rem', fontWeight: '900', color: isDark ? c.primary.dark : c.primary.light, fontStyle: 'italic' }}>₹{totalAmount.toLocaleString()}</span>
+                                <span style={{ fontSize: '2rem', fontWeight: '900', color: isDark ? c.primary.dark : c.primary.light, fontStyle: 'italic' }}>₹{totalAmount.toLocaleString('en-IN')}</span>
                             </div>
                         </div>
 

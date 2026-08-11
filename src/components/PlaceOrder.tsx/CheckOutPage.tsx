@@ -43,7 +43,14 @@ const PayoutPage = () => {
     lastName: "",
     email: "",
     phone: "",
+    state: "",
   });
+
+  const isIgst = useMemo(() => {
+    if (!userDetails.state) return false;
+    const st = userDetails.state.trim().toLowerCase();
+    return st !== "haryana" && st !== "hr";
+  }, [userDetails.state]);
 
   // ─── GST-Inclusive Calculation ─────────────────────────────────────────────
   // totalAmount = cart ka actual price (e.g. ₹600)
@@ -85,6 +92,7 @@ const PayoutPage = () => {
         lastName: userData.user.lastName || "",
         email: userData.user.email || "",
         phone: userData.user.phone || "",
+        state: userData.user.state || "",
       });
     }
   }, [userData, isPending]);
@@ -243,6 +251,7 @@ const PayoutPage = () => {
             subtotal={baseAmount}      // ✅ ₹508 — GST ke bina course price
             gstAmount={gstAmount}      // ✅ ₹92  — sirf GST
             totalAmount={totalWithGST} // ✅ ₹600 — final
+            isIgst={isIgst}
             isDark={isDark}
             c={c}
           />

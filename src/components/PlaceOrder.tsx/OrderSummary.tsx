@@ -10,6 +10,7 @@ interface OrderSummaryProps {
     totalAmount: number;    // ← GST ke saath
     isDark: boolean;
     c: any;
+    isIgst?: boolean;
 }
 
 const OrderSummary: React.FC<OrderSummaryProps> = ({
@@ -19,8 +20,11 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
     totalAmount,
     isDark,
     c,
+    isIgst = false,
 }) => {
     const primaryColor = isDark ? c.primary.dark : c.primary.light;
+    const cgstAmount = Math.floor(gstAmount / 2);
+    const sgstAmount = gstAmount - cgstAmount;
 
     const sidebarStyle: React.CSSProperties = {
         flex: "0.8",
@@ -104,22 +108,64 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
             }}>
                 {/* Subtotal */}
                 <div style={{ ...rowStyle, color: isDark ? "#94a3b8" : "#64748b" }}>
-                    <span>Subtotal</span>
+                    <span>Subtotal (Excl. GST)</span>
                     <span>₹{subtotal.toLocaleString('en-IN')}</span>
                 </div>
 
-                {/* GST */}
+                {/* GST Header Row */}
                 <div style={{
                     ...rowStyle,
                     color: isDark ? "#94a3b8" : "#64748b",
-                    borderBottom: `1px dashed ${isDark ? "rgba(255,255,255,0.08)" : "#e2e8f0"}`,
-                    paddingBottom: "0.75rem",
+                    paddingBottom: "0.25rem",
                 }}>
                     <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                         <Receipt size={13} />
                         GST (18%)
                     </span>
                     <span>+ ₹{gstAmount.toLocaleString('en-IN')}</span>
+                </div>
+
+                {/* GST Breakdown (CGST + SGST or IGST) in small text */}
+                <div style={{
+                    paddingLeft: "1.25rem",
+                    paddingBottom: "0.75rem",
+                    borderBottom: `1px dashed ${isDark ? "rgba(255,255,255,0.08)" : "#e2e8f0"}`,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "2px",
+                }}>
+                    {isIgst ? (
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            fontSize: "0.75rem",
+                            color: isDark ? "#64748b" : "#94a3b8",
+                        }}>
+                            <span>• IGST (18%)</span>
+                            <span>₹{gstAmount.toLocaleString('en-IN')}</span>
+                        </div>
+                    ) : (
+                        <>
+                            <div style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                fontSize: "0.75rem",
+                                color: isDark ? "#64748b" : "#94a3b8",
+                            }}>
+                                <span>• CGST (9%)</span>
+                                <span>₹{cgstAmount.toLocaleString('en-IN')}</span>
+                            </div>
+                            <div style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                fontSize: "0.75rem",
+                                color: isDark ? "#64748b" : "#94a3b8",
+                            }}>
+                                <span>• SGST (9%)</span>
+                                <span>₹{sgstAmount.toLocaleString('en-IN')}</span>
+                            </div>
+                        </>
+                    )}
                 </div>
 
                 {/* Total */}
@@ -138,9 +184,13 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                 {/* GST Note */}
                 <p style={{
                     fontSize: "0.7rem", color: "#94a3b8",
-                    margin: "0.25rem 0 0", textAlign: "right",
+                    margin: "0.4rem 0 0", textAlign: "right",
+                    lineHeight: "1.4",
                 }}>
-                    Inclusive of 18% GST (₹{gstAmount.toLocaleString('en-IN')})
+                    {isIgst
+                        ? `Inclusive of 18% IGST (₹${gstAmount.toLocaleString('en-IN')})`
+                        : `Inclusive of 18% GST (CGST 9%: ₹${cgstAmount.toLocaleString('en-IN')} + SGST 9%: ₹${sgstAmount.toLocaleString('en-IN')})`
+                    }
                 </p>
             </div>
 

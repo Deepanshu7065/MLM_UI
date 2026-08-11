@@ -7,6 +7,7 @@ interface BillingFormProps {
         firstName: string;
         lastName: string;
         email: string;
+        state?: string;
     };
     setUserDetails: (details: any) => void;
     labelStyle: React.CSSProperties;
@@ -88,6 +89,33 @@ const BillingForm: React.FC<BillingFormProps> = ({
                         placeholder="john@example.com"
                         autoComplete="email"
                     />
+                </div>
+
+                {/* State Row (GST Calculation) */}
+                <div>
+                    <label htmlFor="state" style={labelStyle}>
+                        State (For GST Tax Calculation)
+                    </label>
+                    <select
+                        id="state"
+                        style={{
+                            ...inputStyle,
+                            cursor: "pointer",
+                        }}
+                        value={userDetails.state || "Haryana"}
+                        onChange={(e) => handleChange("state", e.target.value)}
+                    >
+                        <option value="Haryana">Haryana (Intra-State: CGST 9% + SGST 9%)</option>
+                        <option value="Delhi">Delhi (Inter-State: IGST 18%)</option>
+                        <option value="Punjab">Punjab (Inter-State: IGST 18%)</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh (Inter-State: IGST 18%)</option>
+                        <option value="Rajasthan">Rajasthan (Inter-State: IGST 18%)</option>
+                        <option value="Maharashtra">Maharashtra (Inter-State: IGST 18%)</option>
+                        <option value="Gujarat">Gujarat (Inter-State: IGST 18%)</option>
+                        <option value="Karnataka">Karnataka (Inter-State: IGST 18%)</option>
+                        <option value="West Bengal">West Bengal (Inter-State: IGST 18%)</option>
+                        <option value="Other">Other State (Inter-State: IGST 18%)</option>
+                    </select>
                 </div>
             </div>
         </div>

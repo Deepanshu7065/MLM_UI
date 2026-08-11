@@ -10,6 +10,8 @@ import { useTheme } from "@/theme/ThemeProvider";
 import { themeColors } from "@/theme/themeConfig";
 import { Loader2, ShoppingBag, Trash2 } from "lucide-react";
 
+import { calculateGSTDetails } from "@/lib/gstUtils";
+
 const CartView = () => {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
@@ -45,6 +47,8 @@ const CartView = () => {
         (sum, item) => sum + Number(item.course?.price || 0),
         0
     );
+
+    const gstDetails = calculateGSTDetails(total, false);
 
     if (isLoading) return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: isDark ? c.background.dark : c.background.light }}>
@@ -151,15 +155,51 @@ const CartView = () => {
                         <div style={{ backgroundColor: isDark ? c.card.dark : c.card.light, border: `1px solid ${isDark ? c.border.dark : c.border.light}`, borderRadius: '2rem', padding: '2.5rem', position: 'sticky', top: '2rem' }}>
                             <h2 style={{ fontSize: '1.5rem', fontWeight: '800', marginBottom: '1.5rem', color: isDark ? '#fff' : '#000' }}>Summary</h2>
 
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', opacity: 0.8 }}>
-                                <span>Subtotal</span>
-                                <span>₹{total}</span>
+                            {/* Subtotal */}
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.6rem', opacity: 0.8, fontSize: '0.9rem' }}>
+                                <span>Subtotal (Excl. GST)</span>
+                                <span>₹{gstDetails.subtotal.toLocaleString('en-IN')}</span>
                             </div>
 
-                            <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '1.5rem', borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`, marginBottom: '1.5rem' }}>
-                                <span style={{ fontWeight: '800' }}>Total Amount</span>
-                                <span style={{ fontSize: '1.8rem', fontWeight: '900', color: isDark ? c.primary.dark : c.primary.light }}>₹{total}</span>
+                            {/* GST Header */}
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.2rem', opacity: 0.8, fontSize: '0.9rem' }}>
+                                <span>GST (18%)</span>
+                                <span>+ ₹{gstDetails.gstAmount.toLocaleString('en-IN')}</span>
                             </div>
+
+                            {/* GST Breakdown (CGST 9% + SGST 9% or IGST 18%) in small text */}
+                            <div style={{ paddingLeft: '1rem', marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                                {gstDetails.isIgst ? (
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', opacity: 0.6 }}>
+                                        <span>• IGST (18%)</span>
+                                        <span>₹{gstDetails.igstAmount.toLocaleString('en-IN')}</span>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', opacity: 0.6 }}>
+                                            <span>• CGST (9%)</span>
+                                            <span>₹{gstDetails.cgstAmount.toLocaleString('en-IN')}</span>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', opacity: 0.6 }}>
+                                            <span>• SGST (9%)</span>
+                                            <span>₹{gstDetails.sgstAmount.toLocaleString('en-IN')}</span>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+
+                            {/* Total Amount */}
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`, marginBottom: '1rem' }}>
+                                <span style={{ fontWeight: '800' }}>Total Amount</span>
+                                <span style={{ fontSize: '1.8rem', fontWeight: '900', color: isDark ? c.primary.dark : c.primary.light }}>₹{total.toLocaleString('en-IN')}</span>
+                            </div>
+
+                            <p style={{ fontSize: '0.72rem', color: isDark ? c.textSecondary.dark : c.textSecondary.light, marginTop: '-0.5rem', marginBottom: '1.25rem', textAlign: 'right', opacity: 0.7 }}>
+                                {gstDetails.isIgst
+                                    ? `Inclusive of 18% IGST (₹${gstDetails.igstAmount.toLocaleString('en-IN')})`
+                                    : `Inclusive of 18% GST (CGST 9%: ₹${gstDetails.cgstAmount.toLocaleString('en-IN')} + SGST 9%: ₹${gstDetails.sgstAmount.toLocaleString('en-IN')})`
+                                }
+                            </p>
 
                             <button
                                 onClick={() => navigate({ to: "/checkout" })}
