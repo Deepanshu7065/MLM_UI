@@ -16,7 +16,9 @@ export const BillAddress = () => {
         <div>
             <p style={{ margin: '4px 0 0', fontSize: '12px', color: '#666', lineHeight: 1.5 }}>
                 Hno.- 5 RBSM Colony,  Gali No -10,
-                nearBy- Damdama Lake Road,
+            </p>
+            <p style={{ margin: '0px 0 0', fontSize: '12px', color: '#666', lineHeight: 1.5 }}>
+                Damdama Lake Road,
                 Bhondsi,
             </p>
             <p style={{ margin: '0px 0 0', fontSize: '12px', color: '#666', lineHeight: 1.5 }}>

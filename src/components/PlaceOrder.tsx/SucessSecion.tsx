@@ -2,7 +2,7 @@
 
 import { CheckCircle, Printer, BookOpen } from "lucide-react";
 import InvoiceTemplate from "../GlobalModal/PrintableInvoice";
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useReactToPrint } from 'react-to-print';
 import { useGetInvoiceData } from "@/hooks/Payment.mutate";
 
@@ -10,42 +10,109 @@ interface SuccessStateProps {
     navigate: (path: { to: string }) => void;
     isDark: boolean;
     c: any;
-    orderId: any;
+    orderId?: any;
+    orderData?: any;
 }
 
 const SuccessState: React.FC<SuccessStateProps> = ({
-    navigate, isDark, c, orderId
+    navigate, isDark, c, orderId, orderData: initialOrderData
 }) => {
-    const [orderData, setInvoiceData] = useState<any>(null);
-    const { mutateAsync: fetchInvoice, } = useGetInvoiceData();
+    // Extract actual string/number orderId whether passed as string or within orderData object
+    const resolvedOrderId = useMemo(() => {
+        const raw = orderId ?? initialOrderData;
+        if (!raw) return "";
+        if (typeof raw === "object") {
+            return raw.orderId || raw.order_id || raw.id || "";
+        }
+        return String(raw);
+    }, [orderId, initialOrderData]);
+
+    const [invoiceData, setInvoiceData] = useState<any>(() => {
+        if (initialOrderData && typeof initialOrderData === "object") {
+            return initialOrderData;
+        }
+        if (orderId && typeof orderId === "object") {
+            return orderId;
+        }
+        return null;
+    });
+    const [isPrinting, setIsPrinting] = useState(false);
+    const { mutateAsync: fetchInvoice, isPending } = useGetInvoiceData();
     const accent = isDark ? c.primary.dark : c.primary.light;
     const invoiceRef = useRef<HTMLDivElement>(null);
+
     const handlePrint = useReactToPrint({
         contentRef: invoiceRef,
-        documentTitle: `Invoice-${orderId}`,
+        documentTitle: `Invoice-${resolvedOrderId || "order"}`,
         pageStyle: `
       @page { size: A4; margin: 20mm; }
       body { background: #fff !important; }
     `,
     });
 
+    // Auto-fetch invoice data in background on mount so it's ready before user clicks print
+    useEffect(() => {
+        if (resolvedOrderId) {
+            fetchInvoice(String(resolvedOrderId))
+                .then((res) => {
+                    const data = res?.data || res;
+                    if (data && (data.ordered_courses || data.orderId || data.order_id)) {
+                        setInvoiceData(data);
+                    }
+                })
+                .catch((err) => {
+                    console.error("Auto invoice prefetch error:", err);
+                });
+        }
+    }, [resolvedOrderId]);
 
     const handlePrintClick = async () => {
         try {
-            // Har baar fresh data fetch karo
-            const res = await fetchInvoice(String(orderId));
-            if (res?.data) {
-                setInvoiceData(res.data);
-                // Re-render ke baad print
-                setTimeout(() => handlePrint(), 300);
+            setIsPrinting(true);
+            const idToFetch = String(resolvedOrderId || "").trim();
+
+            let dataToPrint = invoiceData;
+
+            // Agar pehle se invoiceData nahi hai ya ordered_courses nahi hai to fetch karo
+            if ((!dataToPrint || !dataToPrint.ordered_courses) && idToFetch) {
+                try {
+                    const res = await fetchInvoice(idToFetch);
+                    const fetched = res?.data || res;
+                    if (fetched && (fetched.ordered_courses || fetched.orderId || fetched.order_id)) {
+                        dataToPrint = fetched;
+                        setInvoiceData(fetched);
+                    }
+                } catch (fetchErr) {
+                    console.warn("Invoice API fetch failed, checking fallback:", fetchErr);
+                }
+            }
+
+            // Fallback agar API se nahi mila lekin initialOrderData hai
+            if (!dataToPrint) {
+                const fallback =
+                    (initialOrderData && typeof initialOrderData === "object" ? initialOrderData : null) ||
+                    (orderId && typeof orderId === "object" ? orderId : null);
+                if (fallback) {
+                    dataToPrint = fallback;
+                    setInvoiceData(fallback);
+                }
+            }
+
+            if (dataToPrint) {
+                setTimeout(() => {
+                    handlePrint();
+                    setIsPrinting(false);
+                }, 300);
+            } else {
+                setIsPrinting(false);
+                alert("Invoice load nahi hua. Please try again.");
             }
         } catch (err) {
-            console.error("Invoice fetch error:", err);
+            console.error("Invoice print error:", err);
+            setIsPrinting(false);
             alert("Invoice load nahi hua. Please try again.");
         }
     };
-
-
 
     return (
         <>
@@ -56,7 +123,7 @@ const SuccessState: React.FC<SuccessStateProps> = ({
                 width: "720px",
                 pointerEvents: "none",
             }}>
-                <InvoiceTemplate ref={invoiceRef} data={orderData} />
+                <InvoiceTemplate ref={invoiceRef} data={invoiceData} />
             </div>
 
             <div style={styles.wrapper}>
@@ -72,7 +139,7 @@ const SuccessState: React.FC<SuccessStateProps> = ({
 
                 {/* Order ID pill */}
                 <div style={styles.pill(isDark)}>
-                    Order ID: <strong>#{orderData?.orderId ?? "—"}</strong>
+                    Order ID: <strong>#{resolvedOrderId || invoiceData?.orderId || invoiceData?.order_id || "—"}</strong>
                 </div>
 
                 <div style={styles.btnRow}>
@@ -85,9 +152,14 @@ const SuccessState: React.FC<SuccessStateProps> = ({
 
                     <button
                         onClick={handlePrintClick}
-                        style={styles.btnOutline(accent, isDark)}
+                        disabled={isPrinting || isPending}
+                        style={{
+                            ...styles.btnOutline(accent, isDark),
+                            opacity: isPrinting || isPending ? 0.7 : 1,
+                            cursor: isPrinting || isPending ? "not-allowed" : "pointer"
+                        }}
                     >
-                        <Printer size={18} /> Print bill
+                        <Printer size={18} /> {isPrinting || isPending ? "Loading invoice..." : "Print bill"}
                     </button>
                 </div>
             </div>

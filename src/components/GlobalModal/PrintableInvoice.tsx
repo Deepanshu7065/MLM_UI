@@ -58,7 +58,7 @@ const InvoiceTemplate = React.forwardRef<HTMLDivElement, { data?: any }>(
                         <p style={{ margin: '2px 0', color: '#555', fontSize: '12px' }}>{data.user?.phone}</p>
                     </div>
                     <div style={{ textAlign: 'right', fontSize: '13px' }}>
-                        <p style={{ margin: '3px 0' }}><strong>Order ID:</strong> #{data.orderId}</p>
+                        <p style={{ margin: '3px 0' }}><strong>Order ID:</strong> #{data.orderId ?? data.order_id ?? "—"}</p>
                         <p style={{ margin: '3px 0' }}>
                             <strong>Date:</strong> {data.created_at ? moment(data.created_at).format('DD MMM, YYYY') : moment().format('DD MMM, YYYY')}
                         </p>

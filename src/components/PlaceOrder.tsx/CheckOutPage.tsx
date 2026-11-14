@@ -153,11 +153,33 @@ const PayoutPage = () => {
           });
 
           if (verifyRes.success) {
+            const finalOrderId =
+              verifyRes?.order_id ||
+              verifyRes?.orderId ||
+              verifyRes?.data?.order_id ||
+              verifyRes?.data?.orderId ||
+              verifyRes?.order?.orderId ||
+              verifyRes?.order?.id ||
+              res.order_id;
+
             setOrderData({
-              orderId: verifyRes.order_id,
+              orderId: finalOrderId,
               subtotal: baseAmount,
               gstAmount: gstAmount,
               totalAmount: totalWithGST,
+              isIgst: isIgst,
+              user: {
+                name: `${userDetails.firstName} ${userDetails.lastName}`.trim(),
+                email: userDetails.email,
+                phone: userDetails.phone,
+                state: userDetails.state,
+              },
+              ordered_courses: cart.map((item) => ({
+                id: item.course.id,
+                course_name: item.course.course_name,
+                category_id: (item.course as any)?.category?.sac_code || (item.course as any)?.sac_code || "998319",
+                price: item.course.price,
+              })),
             });
             setStep(3);
           } else {
@@ -210,7 +232,13 @@ const PayoutPage = () => {
             {isProcessing ? (
               <ProcessingState isDark={isDark} c={c} />
             ) : step === 3 ? (
-              <SuccessState navigate={navigate} isDark={isDark} c={c} orderId={orderData} />
+              <SuccessState
+                navigate={navigate}
+                isDark={isDark}
+                c={c}
+                orderId={orderData?.orderId}
+                orderData={orderData}
+              />
             ) : (
               <>
                 {step === 1 && (
