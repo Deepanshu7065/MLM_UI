@@ -27,7 +27,7 @@ const SuccessState: React.FC<SuccessStateProps> = ({
         return String(raw);
     }, [orderId, initialOrderData]);
 
-    const [invoiceData, setInvoiceData] = useState<any>(() => {
+    const baseOrderData = useMemo(() => {
         if (initialOrderData && typeof initialOrderData === "object") {
             return initialOrderData;
         }
@@ -35,7 +35,33 @@ const SuccessState: React.FC<SuccessStateProps> = ({
             return orderId;
         }
         return null;
-    });
+    }, [initialOrderData, orderId]);
+
+    const mergeWithFallback = (existing: any, incoming: any) => {
+        if (!incoming || typeof incoming !== "object") return existing || baseOrderData;
+
+        const incomingCourses =
+            (Array.isArray(incoming.ordered_courses) && incoming.ordered_courses.length > 0 ? incoming.ordered_courses : null) ||
+            (Array.isArray(incoming.courses) && incoming.courses.length > 0 ? incoming.courses : null) ||
+            (Array.isArray(incoming.items) && incoming.items.length > 0 ? incoming.items : null);
+
+        const fallbackCourses =
+            (existing?.ordered_courses?.length ? existing.ordered_courses : null) ||
+            (existing?.courses?.length ? existing.courses : null) ||
+            (baseOrderData?.ordered_courses?.length ? baseOrderData.ordered_courses : null) ||
+            (baseOrderData?.courses?.length ? baseOrderData.courses : null) ||
+            [];
+
+        return {
+            ...(baseOrderData || {}),
+            ...(existing || {}),
+            ...incoming,
+            ordered_courses: incomingCourses || fallbackCourses,
+            user: incoming.user || existing?.user || baseOrderData?.user,
+        };
+    };
+
+    const [invoiceData, setInvoiceData] = useState<any>(baseOrderData);
     const [isPrinting, setIsPrinting] = useState(false);
     const { mutateAsync: fetchInvoice, isPending } = useGetInvoiceData();
     const accent = isDark ? c.primary.dark : c.primary.light;
@@ -56,8 +82,8 @@ const SuccessState: React.FC<SuccessStateProps> = ({
             fetchInvoice(String(resolvedOrderId))
                 .then((res) => {
                     const data = res?.data || res;
-                    if (data && (data.ordered_courses || data.orderId || data.order_id)) {
-                        setInvoiceData(data);
+                    if (data && typeof data === "object") {
+                        setInvoiceData((prev: any) => mergeWithFallback(prev, data));
                     }
                 })
                 .catch((err) => {
@@ -71,31 +97,29 @@ const SuccessState: React.FC<SuccessStateProps> = ({
             setIsPrinting(true);
             const idToFetch = String(resolvedOrderId || "").trim();
 
-            let dataToPrint = invoiceData;
+            let dataToPrint = invoiceData || baseOrderData;
 
             // Agar pehle se invoiceData nahi hai ya ordered_courses nahi hai to fetch karo
-            if ((!dataToPrint || !dataToPrint.ordered_courses) && idToFetch) {
+            const currentCourses =
+                dataToPrint?.ordered_courses || dataToPrint?.courses || dataToPrint?.items;
+
+            if ((!currentCourses || currentCourses.length === 0) && idToFetch) {
                 try {
                     const res = await fetchInvoice(idToFetch);
                     const fetched = res?.data || res;
-                    if (fetched && (fetched.ordered_courses || fetched.orderId || fetched.order_id)) {
-                        dataToPrint = fetched;
-                        setInvoiceData(fetched);
+                    if (fetched && typeof fetched === "object") {
+                        dataToPrint = mergeWithFallback(dataToPrint, fetched);
+                        setInvoiceData(dataToPrint);
                     }
                 } catch (fetchErr) {
                     console.warn("Invoice API fetch failed, checking fallback:", fetchErr);
                 }
             }
 
-            // Fallback agar API se nahi mila lekin initialOrderData hai
+            // Fallback agar API se nahi mila lekin baseOrderData hai
             if (!dataToPrint) {
-                const fallback =
-                    (initialOrderData && typeof initialOrderData === "object" ? initialOrderData : null) ||
-                    (orderId && typeof orderId === "object" ? orderId : null);
-                if (fallback) {
-                    dataToPrint = fallback;
-                    setInvoiceData(fallback);
-                }
+                dataToPrint = baseOrderData;
+                setInvoiceData(baseOrderData);
             }
 
             if (dataToPrint) {

@@ -13,9 +13,9 @@ import InvoiceTemplate from '../GlobalModal/PrintableInvoice';
 import { useReactToPrint } from 'react-to-print';
 
 // ─── Per-order print component ────────────────────────────────────────────────
-const PrintableOrder = ({ orderId, isDark, c }: { orderId: string | number, isDark: boolean, c: any }) => {
+const PrintableOrder = ({ order, orderId, isDark, c }: { order?: any, orderId: string | number, isDark: boolean, c: any }) => {
     const invoiceRef = useRef<HTMLDivElement>(null);
-    const [invoiceData, setInvoiceData] = useState<any>(null);
+    const [invoiceData, setInvoiceData] = useState<any>(order || null);
 
     // ✅ mutation — sirf button click pe call hoga, automatic nahi
     const { mutateAsync: fetchInvoice, isPending } = useGetInvoiceData();
@@ -31,16 +31,42 @@ const PrintableOrder = ({ orderId, isDark, c }: { orderId: string | number, isDa
 
     const handlePrintClick = async () => {
         try {
-            // Har baar fresh data fetch karo
-            const res = await fetchInvoice(String(orderId));
-            if (res?.data) {
-                setInvoiceData(res.data);
-                // Re-render ke baad print
-                setTimeout(() => handlePrint(), 300);
+            let fetchedData: any = null;
+            try {
+                const res = await fetchInvoice(String(orderId));
+                fetchedData = res?.data || res;
+            } catch (fetchErr) {
+                console.warn("Invoice API fetch failed, fallback to order:", fetchErr);
             }
+
+            // Ensure courses are never lost
+            const courses =
+                (Array.isArray(fetchedData?.ordered_courses) && fetchedData.ordered_courses.length > 0 ? fetchedData.ordered_courses : null) ||
+                (Array.isArray(fetchedData?.courses) && fetchedData.courses.length > 0 ? fetchedData.courses : null) ||
+                (Array.isArray(fetchedData?.items) && fetchedData.items.length > 0 ? fetchedData.items : null) ||
+                (Array.isArray(order?.ordered_courses) && order.ordered_courses.length > 0 ? order.ordered_courses : null) ||
+                (Array.isArray(order?.courses) && order.courses.length > 0 ? order.courses : null) ||
+                (Array.isArray(order?.items) && order.items.length > 0 ? order.items : null) ||
+                [];
+
+            const merged = {
+                ...(order || {}),
+                ...(fetchedData && typeof fetchedData === 'object' ? fetchedData : {}),
+                ordered_courses: courses,
+                user: fetchedData?.user || order?.user,
+            };
+
+            setInvoiceData(merged);
+            // Re-render ke baad print
+            setTimeout(() => handlePrint(), 300);
         } catch (err) {
             console.error("Invoice fetch error:", err);
-            alert("Invoice load nahi hua. Please try again.");
+            if (order) {
+                setInvoiceData(order);
+                setTimeout(() => handlePrint(), 300);
+            } else {
+                alert("Invoice load nahi hua. Please try again.");
+            }
         }
     };
 
@@ -180,6 +206,7 @@ const UserOrder = () => {
                                     {/* Print button — sirf completed orders pe */}
                                     {isSuccess && (
                                         <PrintableOrder
+                                            order={order}
                                             orderId={order.orderId}
                                             isDark={isDark}
                                             c={c}
