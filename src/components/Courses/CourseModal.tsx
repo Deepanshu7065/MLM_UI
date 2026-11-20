@@ -1,19 +1,35 @@
 "use client"
 
+import { useState } from "react";
 import { useGetSingleCourseApi } from "@/hooks/courseApi";
 // import { imageUrl } from "@/hooks/utils";
 import { useNavigate, useRouter } from "@tanstack/react-router";
-import { Clock, IndianRupee, ArrowLeft, ArrowRight, Bookmark } from "lucide-react";
+import { Clock, IndianRupee, ArrowLeft, ArrowRight, Bookmark, Pencil } from "lucide-react";
 import { useStore } from "@tanstack/react-store";
+import { userStore } from "@/store/user.store";
 import { CourseStore, courseActions, type CartCourse } from "./addCourseStore";
 import { useAddCart, useRemoveCart } from "@/hooks/cart.mutate";
 import { useTheme } from "@/theme/ThemeProvider";
 import { themeColors } from "@/theme/themeConfig";
+import { EditCourseModal } from "./EditCourseModal";
 
 export const ViewOpenCourseDetails = () => {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
     const c = themeColors;
+
+    const [isEditing, setIsEditing] = useState(false);
+    const { user: userDetails } = useStore(userStore);
+    const isAdmin =
+        userDetails?.role === "admin" ||
+        (() => {
+            try {
+                const a = localStorage.getItem("auth");
+                return a ? JSON.parse(a)?.role === "admin" : false;
+            } catch {
+                return false;
+            }
+        })();
 
     const rawUserId = localStorage.getItem('auth');
     const userId = rawUserId ? JSON.parse(rawUserId) : null;
@@ -90,12 +106,38 @@ export const ViewOpenCourseDetails = () => {
                 />
 
                 <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem', width: '100%', position: 'relative', zIndex: 10 }}>
-                    <button
-                        onClick={() => window.history.back()}
-                        style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', background: 'none', border: 'none', cursor: 'pointer', fontSize: '12px', fontWeight: '800', textTransform: 'uppercase', color: primary }}
-                    >
-                        <ArrowLeft size={16} /> Back
-                    </button>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+                        <button
+                            onClick={() => window.history.back()}
+                            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'none', border: 'none', cursor: 'pointer', fontSize: '12px', fontWeight: '800', textTransform: 'uppercase', color: primary }}
+                        >
+                            <ArrowLeft size={16} /> Back
+                        </button>
+                        {isAdmin && (
+                            <button
+                                type="button"
+                                title="Edit Course (Admin Only)"
+                                onClick={() => setIsEditing(true)}
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '0.4rem',
+                                    backgroundColor: primary,
+                                    color: isDark ? '#000' : '#fff',
+                                    border: 'none',
+                                    borderRadius: '999px',
+                                    padding: '6px 16px',
+                                    cursor: 'pointer',
+                                    fontSize: '12px',
+                                    fontWeight: '800',
+                                    textTransform: 'uppercase',
+                                    boxShadow: `0 4px 12px ${primary}44`,
+                                }}
+                            >
+                                <Pencil size={13} /> Edit Course
+                            </button>
+                        )}
+                    </div>
                     <h1 className="course-title-main">{course.course_name}</h1>
                 </div>
             </div>
@@ -160,6 +202,12 @@ export const ViewOpenCourseDetails = () => {
                     </div>
                 </div>
             </div>
+
+            <EditCourseModal
+                course={course}
+                open={isEditing}
+                onOpenChange={setIsEditing}
+            />
         </div>
     );
 

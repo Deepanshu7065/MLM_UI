@@ -1,17 +1,35 @@
 "use client"
 
+import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { CourseApi } from "@/Apis/Courses/courseApi"
 import { useTheme } from "@/theme/ThemeProvider"
 import { getThemeColor } from "@/theme/themeConfig"
 // import { imageUrl } from "@/hooks/utils"
 import { useNavigate } from "@tanstack/react-router"
-import { Clock, BookOpen, ArrowRight, Lock } from "lucide-react"
+import { Clock, BookOpen, ArrowRight, Lock, Pencil } from "lucide-react"
+import { useStore } from "@tanstack/react-store"
+import { userStore } from "@/store/user.store"
+import { EditCourseModal } from "./EditCourseModal"
 
 const OurCureseList = () => {
   const { theme } = useTheme()
   const isDark = theme === "dark"
   const navigate = useNavigate()
+
+  const { user: userDetails } = useStore(userStore)
+  const isAdmin =
+    userDetails?.role === "admin" ||
+    (() => {
+      try {
+        const a = localStorage.getItem("auth")
+        return a ? JSON.parse(a)?.role === "admin" : false
+      } catch {
+        return false
+      }
+    })()
+
+  const [editingCourse, setEditingCourse] = useState<any | null>(null)
 
   const textColor = getThemeColor(theme, "text")
   const textSecondary = getThemeColor(theme, "textSecondary")
@@ -211,6 +229,38 @@ const OurCureseList = () => {
                 />
                 <div className="cc-img-overlay" />
                 <span className="cc-premium">Premium</span>
+                {isAdmin && (
+                  <button
+                    type="button"
+                    title="Edit Course (Admin Only)"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setEditingCourse(item);
+                    }}
+                    style={{
+                      position: "absolute",
+                      top: "0.75rem",
+                      right: "0.75rem",
+                      zIndex: 10,
+                      backgroundColor: "rgba(0,0,0,0.75)",
+                      backdropFilter: "blur(6px)",
+                      color: "#ffffff",
+                      border: `1.5px solid ${primaryColor}`,
+                      borderRadius: "999px",
+                      padding: "5px 11px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "5px",
+                      fontSize: "0.72rem",
+                      fontWeight: "800",
+                      cursor: "pointer",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+                    }}
+                  >
+                    <Pencil size={12} />
+                    <span>Edit</span>
+                  </button>
+                )}
                 <span className="cc-price">₹{item.price}</span>
               </div>
 
@@ -239,6 +289,12 @@ const OurCureseList = () => {
           )
         })}
       </div>
+
+      <EditCourseModal
+        course={editingCourse}
+        open={Boolean(editingCourse)}
+        onOpenChange={(open) => !open && setEditingCourse(null)}
+      />
     </>
   )
 }

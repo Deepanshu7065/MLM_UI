@@ -22,3 +22,15 @@ export const useGetSingleCourseApi = ({ id }: { id: string }) => {
         enabled: !!id
     });
 }
+
+export const useUpdateCourseApi = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: ({ id, data }: { id: string | number; data: FormData }) =>
+            CourseApi.updateCourseApi({ id, data }),
+        onSuccess: (_data, variables) => {
+            queryClient.invalidateQueries({ queryKey: ["courses"] });
+            queryClient.invalidateQueries({ queryKey: ["singleCourse", String(variables.id)] });
+        },
+    });
+};

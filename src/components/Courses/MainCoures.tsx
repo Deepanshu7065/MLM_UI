@@ -1,16 +1,19 @@
 "use client"
 
+import { useState } from "react"
 import { CourseApi } from "@/Apis/Courses/courseApi"
 import { useQuery } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 import { courseActions, CourseStore, type CartCourse } from "./addCourseStore"
 import { useStore } from "@tanstack/react-store"
-import { ShoppingCart, ArrowRight, Loader2 } from "lucide-react"
+import { userStore } from "@/store/user.store"
+import { ShoppingCart, ArrowRight, Loader2, Pencil } from "lucide-react"
 // import { imageUrl } from "@/hooks/utils"
 import { useAddCart, useRemoveCart } from "@/hooks/cart.mutate"
 import { useTheme } from "@/theme/ThemeProvider"
 import { themeColors } from "@/theme/themeConfig"
 import { Button } from "../ui/button"
+import { EditCourseModal } from "./EditCourseModal"
 
 function MainCourses() {
     const { theme } = useTheme()
@@ -18,6 +21,20 @@ function MainCourses() {
     const { mutateAsync: addCart } = useAddCart()
     const { mutateAsync: removeCart } = useRemoveCart()
     const navigate = useNavigate()
+
+    const { user: userDetails } = useStore(userStore)
+    const isAdmin =
+        userDetails?.role === "admin" ||
+        (() => {
+            try {
+                const a = localStorage.getItem("auth")
+                return a ? JSON.parse(a)?.role === "admin" : false
+            } catch {
+                return false
+            }
+        })()
+
+    const [editingCourse, setEditingCourse] = useState<any | null>(null)
 
     const { data, isLoading } = useQuery({
         queryKey: ['courses'],
@@ -127,6 +144,38 @@ function MainCourses() {
                                     loading="lazy"
                                     decoding="async"
                                 />
+                                {isAdmin && (
+                                    <button
+                                        type="button"
+                                        title="Edit Course (Admin Only)"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setEditingCourse(item);
+                                        }}
+                                        style={{
+                                            position: "absolute",
+                                            top: "10px",
+                                            right: "10px",
+                                            zIndex: 10,
+                                            backgroundColor: "rgba(0,0,0,0.75)",
+                                            backdropFilter: "blur(6px)",
+                                            color: "#ffffff",
+                                            border: `1.5px solid ${isDark ? c.primary.dark : c.primary.light}`,
+                                            borderRadius: "999px",
+                                            padding: "5px 11px",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: "5px",
+                                            fontSize: "0.72rem",
+                                            fontWeight: "800",
+                                            cursor: "pointer",
+                                            boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+                                        }}
+                                    >
+                                        <Pencil size={12} />
+                                        <span>Edit</span>
+                                    </button>
+                                )}
                                 <div style={{
                                     position: 'absolute', bottom: '10px', right: '10px',
                                     backgroundColor: 'rgba(0,0,0,0.6)', color: '#fff',
@@ -211,6 +260,12 @@ function MainCourses() {
                     )
                 })}
             </div>
+
+            <EditCourseModal
+                course={editingCourse}
+                open={Boolean(editingCourse)}
+                onOpenChange={(open) => !open && setEditingCourse(null)}
+            />
         </div>
     )
 }

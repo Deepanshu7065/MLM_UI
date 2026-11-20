@@ -41,5 +41,14 @@ export const CourseApi = {
         });
         return res.data
     },
+    updateCourseApi: async ({ id, data }: { id: string | number; data: FormData | any }) => {
+        const res = await api.put(`${baseUrl}/manage_course/${id}`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            },
+        });
+        return res.data;
+    },
 }
 
